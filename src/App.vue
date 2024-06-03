@@ -1,65 +1,50 @@
 <script >
   
-  import AppNav from './components/AppNav.vue'
+  import AppNav from './components/Nav.vue'
+  import AppFooter from './components/Footer.vue'
 
 
   export default {
-  components:{  AppNav }
+  components:{  AppNav,  AppFooter }
   }
 </script>
 
 <template>
 
-  <div class="container">
-    <AppNav />
-    <router-view class="page"></router-view>
+  <div class="c">
+
+    <AppNav class="nav" />
+
+    <div class="sub-page">
+      <router-view class="page"></router-view>
+      <AppFooter />
+    </div>
+
   </div>
  
 
   
 </template>
 
-<style lang="scss">
+<style lang="scss" >
 @use './assets/styles/general.scss' as *;
-body{
-  background-color: $c-bg;
-}
 
-.container{
+.c{
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: flex-end;
-  padding: 0;
-}
-.page{
-    // position: fixed;
-    // top: 0;
-    // right: 0;
-
-    width: 70%;
-    padding: 0 2rem ;
+  flex-direction: column;
+  .nav{
     overflow: hidden;
-}
-
-
-@media (max-width:$bp1) {
-  .page{
-    width: 100%;
+    //flex-grow: 1;
   }
-  
-}
+  .sub-page{
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
 
-body::-webkit-scrollbar{
-  width: 10px;
 }
-body::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: $c-header;
-}
-body::-webkit-scrollbar-thumb:hover {
-  border-radius: 20px;
-  background-color: $c-nav-link;
-  border: 2px solid $c-header;
-    
-}
-
 </style>
