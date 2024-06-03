@@ -24,6 +24,7 @@
       <a href="">Creato da Future plus</a>
     </div>
   </footer>
+
 </template>
 
 <style scoped lang="scss">
@@ -31,9 +32,38 @@
 footer{
   background-color: $c1;
   padding: 2em;
-  color: $c3;
+  color: $ctext;
   a{
-    color: $c3;
+    color: $ctext;
   }
+  .legal{
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+}
+.footer-small{
+  a{
+    color: $ctext;
+
+  }
+  
+}
+@media (max-width: $bp_sm) {
+  footer{
+    h4{
+      display: none;
+    }
+    padding: 5px;
+    font-size: 13px;
+    justify-content:flex-end;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  
 }
 </style>

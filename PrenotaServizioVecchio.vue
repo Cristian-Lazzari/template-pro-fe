@@ -54,10 +54,10 @@ export default {
       }
 
       if (!this.phone) {
-        this.phoneError = "Il campo 'N° 'telefono' è richiesto!";
+        this.phoneError = "Il campo 'N° 'phone' è richiesto!";
         this.isValid = false;
       } else if (this.phone.length !== 10) {
-        this.phoneError = "Il campo 'N° 'telefono' deve essere di 10 cifre!";
+        this.phoneError = "Il campo 'N° 'phone' deve essere di 10 cifre!";
         this.isValid = false;
       }
 
@@ -207,12 +207,12 @@ export default {
         <div v-if="nameError" id="nameError">{{ nameError }}</div>
       </div>
       <div class="sec-form">
-        <label for="phone">Numero di telefono</label>
+        <label for="phone">Numero di phone</label>
         <input
           v-model="phone"
           type="text"
           onkeypress="return /[0-9]/i.test(event.key)"
-          placeholder="N° telefono"
+          placeholder="N° phone"
           id="phone"
         />
         <div v-if="phoneError" id="phoneError">{{ phoneError }}</div>

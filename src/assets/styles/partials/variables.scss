@@ -1,4 +1,35 @@
 $c1: black;
 $c2: rgb(48, 48, 48);
-$c3: rgb(240, 240, 240);
+$ctext: rgb(240, 240, 240);
 $c4: rgb(151, 44, 44);
+
+
+
+$bp_md : 890px;
+$bp_sm : 550px;
+$bp_xsm : 370px;
+
+*{
+    color: $ctext;
+}
+
+.general-page{
+    padding: 2rem;
+    background-color: $c2;
+    h1{
+        font-size: clamp(18px, 2.7vw, 25px);
+    }
+}
+@media (max-width:$bp_sm) {
+    .general-page{
+        padding: 1rem !important;
+        
+    }
+}
+.cta{
+    background-color: $ctext;
+    color: $c2;
+    padding: 6px 10px;
+    border-radius: 7px;
+    width: fit-content;
+}

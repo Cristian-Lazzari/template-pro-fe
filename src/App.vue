@@ -28,15 +28,17 @@
 
 <style lang="scss" >
 @use './assets/styles/general.scss' as *;
-
+body{
+  overflow: hidden;
+}
 .c{
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   .nav{
-    overflow: hidden;
-    //flex-grow: 1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.56);
   }
   .sub-page{
     display: flex;

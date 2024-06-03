@@ -10,21 +10,21 @@
         content: [
           {
             'title' : 'Titolo Paragrafo',
-            'img' : '/public/img/pizza-1.png',
+            'img' : state.domain + '/img/pizza-1.png',
             'p' : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic obcaecati blanditiis iste quos facilis nemo alias! Obcaecati aut omnis cupiditate asperiores eos, dolor ipsum, debitis exercitationem excepturi ab quibusdam hic!',
             'cta' : 'Prenota Asporto',
             'cta_destination' : 1,  //1 asporto 2 tavoli 3 menu 4 contatti 5 about us
           },
           {
             'title' : 'Titolo Paragrafo 2',
-            'img' : '/public/img/pizza-2.png',
+            'img' : state.domain + '/img/pizza-2.png',
             'p' : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic obcaecati blanditiis iste quos facilis nemo alias! Obcaecati aut omnis cupiditate asperiores eos, dolor ipsum, debitis exercitationem excepturi ab quibusdam hic!',
             'cta' : 'Prenota tavolo',
             'cta_destination' : 2,  //1 asporto 2 tavoli 3 menu 4 contatti 5 about us
           },
           {
             'title' : 'Titolo Paragrafo 3',
-            'img' : '/public/img/pizza-3.png',
+            'img' : state.domain + '/img/pizza-3.png',
             'p' : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic obcaecati blanditiis iste quos facilis nemo alias! Obcaecati aut omnis cupiditate asperiores eos, dolor ipsum, debitis exercitationem excepturi ab quibusdam hic!',
             'cta' : 'vedi menu',
             'cta_destination' : 3,  //1 asporto 2 tavoli 3 menu 4 contatti 5 about us
@@ -47,8 +47,8 @@
       </div>
       <div class="text">
         <h2>{{par.title}}</h2>
-        <p></p>
-        <div @click="state.movep(par.cta_destination)" class="btn">{{ par.cta }}</div>
+        <p>{{ par.p }}</p>
+        <div @click="state.movep(par.cta_destination)" class="cta">{{ par.cta }}</div>
       </div>
 
     </section>
@@ -66,20 +66,60 @@
     margin-bottom: 100px ;
     scroll-snap-align: start;
     background-color: $c2;
-    color: $c3;
+    color: $ctext;
     display: flex;
     width: 100%;
     height: 100% !important;
     .img-sect{
-      width: 50%;
+      flex-shrink: 0;
+      width: 64%;
+      img{
+        object-fit: cover;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+      }
     }
-    img{
-      object-fit: cover;
-      background-size: cover;
-      width: 100%;
-      height: 100%;
+    .text{
+      flex-shrink: 1;
+      padding: 10%;
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+      text-align: right;
+      align-items: flex-end;
     }
   }
+  section:nth-child(even){
+    flex-flow: row-reverse;
+    background-color: $c1;
+    .text{
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+}
+
+@media (max-width: $bp_sm) {
+  .container{
+    height: 96%;
+  }
+  section{
+    flex-direction: column;
+    .img-sect{
+      height: clamp(250px, 50%, 320px);
+      width: 100%!important;
+    }
+    .text{
+      padding: 0 0 10px 0;
+      flex: 1 1 auto !important;
+      
+    }
+  }
+  section:nth-child(even){
+    flex-flow: column !important;
+  }
+  
 }
 
 </style>

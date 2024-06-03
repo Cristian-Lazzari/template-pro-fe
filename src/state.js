@@ -2,13 +2,14 @@ import { reactive } from "vue";
 
 export const state = reactive({
   baseUrl: "http://127.0.0.1:8000/",
+  domain: "http://dpf.future-plus.it/",
   getImageUrl(image) {
     return this.baseUrl + "public/storage/" + image;
   },
 
   //---1-Gestione interfaccia grafica
 
-
+  navMobile: false,
 
 
 
@@ -16,7 +17,10 @@ export const state = reactive({
 
 
   //-----2-a-Dati
-
+  contact : {
+    'email' : 'email',
+    'phone' : 'phone',
+  },
 
   //-----2-b-Funzioni 
   movep(npage){ //1 asporto 2 tavoli 3 menu 4 contatti 5 story 6 news 
