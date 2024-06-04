@@ -53,6 +53,12 @@ body{
     flex-grow: 1;
     flex-shrink: 1;
   }
-
+  
+}
+@media (max-width: $bp_sm) {
+  .page{
+    padding-bottom: $d_foo !important;
+  }
+  
 }
 </style>

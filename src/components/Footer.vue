@@ -51,10 +51,12 @@ footer{
 }
 @media (max-width: $bp_sm) {
   footer{
+    padding: 0 10px;
+    height: $d_foo ;
     h4{
       display: none;
     }
-    padding: 5px;
+    display: flex;
     font-size: 13px;
     justify-content:flex-end;
     gap: 6px;

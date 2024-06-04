@@ -63,13 +63,13 @@
       </div>
     </div>
     <div :class="!state.navMobile ? 'menu-tendina' : 'menu-tendina-on menu-tendina' " >
-      <span @click="movep(7)">Home</span>
-      <span @click="movep(3)">Menu</span>
-      <span @click="movep(1)">Ordina Asporto</span>
-      <span @click="movep(2)">Prenota Tavolo</span>
-      <span @click="movep(6)">News</span>
-      <span @click="movep(5)">Chi siamo</span>
-      <span @click="movep(4)">Contatti</span>
+      <span @click="movep(7); state.navMobile = !state.navMobile">Home</span>
+      <span @click="movep(3); state.navMobile = !state.navMobile">Menu</span>
+      <span @click="movep(1); state.navMobile = !state.navMobile">Ordina Asporto</span>
+      <span @click="movep(2); state.navMobile = !state.navMobile">Prenota Tavolo</span>
+      <span @click="movep(6); state.navMobile = !state.navMobile">News</span>
+      <span @click="movep(5); state.navMobile = !state.navMobile">Chi siamo</span>
+      <span @click="movep(4); state.navMobile = !state.navMobile">Contatti</span>
     </div>
   </nav>
 </template>
@@ -151,7 +151,7 @@
   left: 0;
   z-index: 100;
   width: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
@@ -170,6 +170,9 @@
   transition: all .3s ease-in-out;
 }
 @media (max-width: $bp_md) {
+  .menu-tendina{
+    display: flex;
+  }
   .right{
     justify-content: flex-end !important;
     span{
