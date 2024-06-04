@@ -63,7 +63,6 @@
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   section{
-    margin-bottom: 100px ;
     scroll-snap-align: start;
     background-color: $c2;
     color: $ctext;
@@ -113,7 +112,7 @@
       width: 100%!important;
     }
     .text{
-      flex-grow: 1;
+      gap: 1rem !important;
       
     }
   }

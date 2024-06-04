@@ -25,7 +25,6 @@ export const state = reactive({
   //-----2-b-Funzioni 
   movep(npage){ //1 asporto 2 tavoli 3 menu 4 contatti 5 story 6 news 
 
-    this.navMobile = false ;
     if(npage == 1 ){
       this.$router.replace("/ordina")
       

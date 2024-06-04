@@ -56,9 +56,7 @@ body{
   
 }
 @media (max-width: $bp_sm) {
-  .page{
-    padding-bottom: $d_foo !important;
-  }
+
   
 }
 </style>

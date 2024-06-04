@@ -120,30 +120,37 @@
       width: 100%;
       border-radius: 10px;
       height: 4px;
+      transition: all .3s ease-in-out;
     }
     .l2{
       width: 70% !important;
       align-self: flex-end;
+      transition: all .3s ease-in-out;
     }
   }
   .im-actvive{
-    transform: translate(-50%, 50%);
+    transform: translate(20%, 50%);
     position: relative;
     .l2{
       opacity: 0;
+      transition: all .3s ease-in-out;
     }
     .l1{
-      transform: rotateZ(45deg);
+      transform: rotateZ(225deg);
       position: absolute;
+      transition: all .3s ease-in-out;
     }
     .l3{
-      transform: rotateZ(-45deg);
+      transition: all .3s ease-in-out;
+      transform: rotateZ(-225deg);
       position: absolute;
     }
+    transition: all .3s ease-in-out;
   }
   
 }
 .menu-tendina{
+  opacity: 0.3;
   background-color: $c2;
   height: 0;
   position: fixed;
@@ -157,14 +164,18 @@
   align-items: center;
   span{
     display: none;
+    opacity: 0;
     font-size: clamp(25px, 3.3vw, 32px);
     text-transform: uppercase;
+    transition: opacity .1s ease-in-out;
   }
   transition: all .3s ease-in-out;
 }
 .menu-tendina-on{
+  opacity: 1;
   span{
     display: block;
+    opacity: 1;
   }
   height: 100% !important;
   transition: all .3s ease-in-out;
