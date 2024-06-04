@@ -62,7 +62,7 @@
         <div class="l l3"></div>
       </div>
     </div>
-    <div v-if="state.navMobile"  class="menu-tendina">
+    <div :class="!state.navMobile ? 'menu-tendina' : 'menu-tendina-on menu-tendina' " >
       <span @click="movep(7)">Home</span>
       <span @click="movep(3)">Menu</span>
       <span @click="movep(1)">Ordina Asporto</span>
@@ -108,6 +108,8 @@
     height: 90px;
   }
   .icon-menu{
+    position: relative;
+    z-index: 1500;
     display: none;
     height: 33px;
     width: 37px;
@@ -125,6 +127,7 @@
     }
   }
   .im-actvive{
+    transform: translate(-50%, 50%);
     position: relative;
     .l2{
       opacity: 0;
@@ -139,6 +142,32 @@
     }
   }
   
+}
+.menu-tendina{
+  background-color: $c2;
+  height: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  span{
+    display: none;
+    font-size: clamp(25px, 3.3vw, 32px);
+    text-transform: uppercase;
+  }
+  transition: all .3s ease-in-out;
+}
+.menu-tendina-on{
+  span{
+    display: block;
+  }
+  height: 100% !important;
+  transition: all .3s ease-in-out;
 }
 @media (max-width: $bp_md) {
   .right{

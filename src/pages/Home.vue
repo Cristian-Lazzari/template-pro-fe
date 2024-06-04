@@ -102,17 +102,19 @@
 
 @media (max-width: $bp_sm) {
   .container{
-    height: 96%;
+    height: 94%;
   }
   section{
     flex-direction: column;
     .img-sect{
-      height: clamp(250px, 50%, 320px);
+      height: clamp(200px, 40%, 320px);
+      flex-grow: 1;
+      flex-shrink: 1;
       width: 100%!important;
     }
     .text{
-      padding: 0 0 10px 0;
-      flex: 1 1 auto !important;
+      flex-grow: 1;
+      padding: 0 0 1000px 0;
       
     }
   }
