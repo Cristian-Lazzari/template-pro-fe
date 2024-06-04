@@ -68,7 +68,7 @@
     color: $ctext;
     display: flex;
     width: 100%;
-    height: 100% !important;
+    height: 100% ;
     .img-sect{
       flex-shrink: 0;
       width: 64%;
@@ -103,7 +103,8 @@
   .container{
   }
   section{
-    height: 94%;
+    margin-bottom: 500px;
+    height: 90% !important;
     flex-direction: column;
     .img-sect{
       height: clamp(180px, 34%, 320px);
@@ -112,6 +113,8 @@
       width: 100%!important;
     }
     .text{
+      flex-grow: 1;
+      padding: 1.2rem !important;
       gap: 1rem !important;
       
     }
