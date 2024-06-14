@@ -1,11 +1,26 @@
 <script >
-  
+  import { state } from "./state.js";
+
+  import axios from "axios";
   import AppNav from './components/Nav.vue'
   import AppFooter from './components/Footer.vue'
 
 
   export default {
-  components:{  AppNav,  AppFooter }
+    components:{  AppNav,  AppFooter },
+
+    data() {
+      return {
+        state,
+      };
+    },
+    methods:{
+
+    },
+    async mounted() {
+      const settings = await axios.get(state.baseUrl + "api/setting", {});
+      this.state.settings = settings.data.results;
+    },
   }
 </script>
 
@@ -30,8 +45,9 @@
 @use './assets/styles/general.scss' as *;
 body{
   overflow: hidden;
-}
+  }
 .c{
+  background-color: $c2;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -47,15 +63,22 @@ body{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.56);
   }
   .sub-page{
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     overflow-x: auto;
     flex-grow: 1;
     flex-shrink: 1;
-  }
-  
-}
+    .page{
+      
+      padding: 2rem;
+    }
+    }
+    
+    }
 @media (max-width: $bp_sm) {
+  
 
   
 }
