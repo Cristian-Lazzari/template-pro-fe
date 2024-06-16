@@ -32,9 +32,9 @@
 footer{
   background-color: $c1;
   padding: 2em;
-  color: $ctext;
+  color: $cText;
   a{
-    color: $ctext;
+    color: $cText;
   }
   .legal{
     display: flex;
@@ -44,7 +44,7 @@ footer{
 }
 .footer-small{
   a{
-    color: $ctext;
+    color: $cText;
 
   }
   

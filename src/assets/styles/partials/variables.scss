@@ -1,8 +1,14 @@
 $c1: black;
 $c2: rgb(48, 48, 48);
-$card: rgb(95, 73, 73);
-$ctext: rgb(240, 240, 240);
+$c3: rgb(95, 73, 73);
 $c4: rgb(151, 44, 44);
+$c5: rgb(240, 240, 240);
+
+$cNav: $c4;
+$cBg: $c1;
+$cBg2: $c2;
+$cCard: $c3;
+$cText: $c5;
 
 $d_foo : 20px;
 
@@ -13,7 +19,7 @@ $bp_sm : 550px;
 $bp_xsm : 370px;
 
 *{
-    color: $ctext;
+    color: $cText;
 }
 
 $fs_xsm: clamp(12px, 2.2vw, 18px);
@@ -36,7 +42,7 @@ $fs_xlg: clamp(22px, 3.4vw, 38px);
     }
 }
 .cta{
-    background-color: $ctext;
+    background-color: $cText;
     color: $c2;
     padding: 6px 10px;
     border-radius: 7px;

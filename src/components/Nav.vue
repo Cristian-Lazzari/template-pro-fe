@@ -94,7 +94,7 @@
     justify-content: space-between;
     flex-grow: 1;
     padding-inline: 1rem;
-    color: $ctext;
+    color: $cText;
     span, a{
       font-size: clamp(17px, 2.4vw, 20px);
       font-family: "Jomhuria", serif;
@@ -122,7 +122,7 @@
     flex-direction: column;
     justify-content: space-between;
     .l{
-      background-color: $ctext;
+      background-color: $cText;
       width: 100%;
       border-radius: 10px;
       height: 4px;

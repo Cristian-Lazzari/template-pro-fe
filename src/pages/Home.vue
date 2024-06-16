@@ -39,7 +39,7 @@
 </script>
 
 <template>
-  <div class="container">
+  <div id="home" class="cont">
     <section v-for="par in content" :key="par.title">
       <div class="img-sect">
         <img :src="par.img" alt="">
@@ -58,14 +58,14 @@
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
 
-.container{
+.cont{
   padding: 0 !important;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   section{
     scroll-snap-align: start;
     background-color: $c2;
-    color: $ctext;
+    color: $cText;
     display: flex;
     width: 100%;
     height: 100% ;
@@ -99,8 +99,8 @@
   }
 }
 
-@media (max-width: $bp_sm) {
-  .container{
+@media (max-width: $bp_md) {
+  #home{
   }
   section{
     margin-bottom: 500px;

@@ -31,7 +31,7 @@
     <AppNav class="nav" />
 
     <div class="sub-page">
-      <router-view class="page"></router-view>
+      <router-view id="page" class="page"></router-view>
       <AppFooter />
     </div>
 
@@ -72,15 +72,14 @@ body{
     flex-shrink: 1;
       .page{
         
-        padding: 2rem;
+        padding: 1.5rem 1.5rem 50vh;
       }
       }
       
       }
 @media (max-width: $bp_sm) {
         
-  .page{
-    
+  #page{
     padding: .5rem .5rem 50vh;
     h1{
       margin-bottom: 2vh;

@@ -103,7 +103,7 @@
     .product-card{
       flex-grow: 1;
       width: calc((100% - 2rem) / 2);
-      background-color: $card;
+      background-color: $cCard;
       border-radius: 10px;
       padding: 1rem;
       display: flex;
