@@ -11,6 +11,7 @@
         allergiens: [],
         ingredients: [],
         categories: [],
+        openCategory: false,
         category: {
           'id' : '0',
           'name': 'Tutti',
@@ -40,6 +41,7 @@
 
       const categories = await axios.get(state.baseUrl + "api/categories", {})
       this.categories = categories.data.results
+      this.categories.shift()
 
       this.allergiens = products.data.allergiens
       this.products.forEach(e => {
@@ -54,11 +56,11 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" :class="openCategory ? 'container-over' : ''">
     <h1>Menu</h1>
-    <div class="category">
+    <div class="category" @click="openCategory = !openCategory" :class="openCategory ? 'category-on' : ''">
       <div class="body">
-        <span class="cat_active">{{ category.name }}</span>
+        <span class="cat_active">{{ category.name }} - Scegli la categoria</span>
       </div>
       <div class="cont">
         <span>Tutti</span>
@@ -91,8 +93,57 @@
 
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
-
+.container-over::after{
+    content: '';
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.439);
+    z-index: 4;
+  }
 .container{
+  .category{
+    position: sticky;
+    top: 30px;
+    right: 40px;
+    margin: 20px 0 15px auto;
+    width: fit-content;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 12;
+    background-color: $c1;
+    font-size: $fs_md;
+    .body{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .cont{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+  }
+  .category-on{
+    .body{
+      display: none;
+    }
+    .cont{
+      flex-direction: column;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  }
+  
   .cont-p{
     width: 100%;
     display: flex;

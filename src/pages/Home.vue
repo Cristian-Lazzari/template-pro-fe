@@ -100,8 +100,7 @@
 }
 
 @media (max-width: $bp_md) {
-  #home{
-  }
+  
   section{
     margin-bottom: 500px;
     height: 90% !important;

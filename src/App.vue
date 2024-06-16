@@ -61,6 +61,7 @@ body{
   z-index: 2;
   .nav{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.56);
+    z-index: 10;
   }
   .sub-page{
     height: 100%;
@@ -71,6 +72,10 @@ body{
     flex-grow: 1;
     flex-shrink: 1;
       .page{
+        h1{
+          margin-bottom: 2vh;
+          font-size: $fs_xlg;
+        }
         
         padding: 1.5rem 1.5rem 50vh;
       }
@@ -81,10 +86,7 @@ body{
         
   #page{
     padding: .5rem .5rem 50vh;
-    h1{
-      margin-bottom: 2vh;
-      font-size: $fs-xlg;
-    }
+    
   }
 
   
