@@ -59,7 +59,7 @@
 @use "../assets/styles/general.scss" as *;
 
 .container{
-  height: 100%;
+  padding: 0 !important;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   section{

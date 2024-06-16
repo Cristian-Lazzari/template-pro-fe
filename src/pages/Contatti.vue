@@ -85,9 +85,6 @@
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
 .contatti{
-  height: 100%;
-  background-color: $c2;
-  padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

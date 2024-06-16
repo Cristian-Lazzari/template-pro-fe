@@ -46,12 +46,13 @@
       <img v-else src="../../public/img/logoblack.png" alt="">
     </div>
     <div class="right">  
-      
       <!--  1 asporto 2 tavoli 3 menu 4 contatti 5 story 6 news 7 home -->
       <span @click="movep(7)">Home</span>
       <span @click="movep(3)">Menu</span>
-      <span @click="movep(1)">Ordina Asporto</span>
-      <span @click="movep(2)">Prenota Tavolo</span>
+      <span v-if="state.settings[1].status == 2"  @click="movep(1)">Ordina Asporto</span>
+      <span v-if="state.settings[0].status == 2" @click="movep(2)">Prenota Tavolo</span>
+      <a :href="'tel:' + state.contact.phone" v-if="state.settings[1].status == 1">Ordina Asporto</a>
+      <a :href="'tel:' + state.contact.phone" v-if="state.settings[0].status == 1">Prenota Tavolo</a>
       <span @click="movep(6)">News</span>
       <span @click="movep(5)">Chi siamo</span>
       <span @click="movep(4)">Contatti</span>
@@ -65,8 +66,10 @@
     <div :class="!state.navMobile ? 'menu-tendina' : 'menu-tendina-on menu-tendina' " >
       <span @click="movep(7); state.navMobile = !state.navMobile">Home</span>
       <span @click="movep(3); state.navMobile = !state.navMobile">Menu</span>
-      <span @click="movep(1); state.navMobile = !state.navMobile">Ordina Asporto</span>
-      <span @click="movep(2); state.navMobile = !state.navMobile">Prenota Tavolo</span>
+      <span v-if="state.settings[1].status == 2" @click="movep(1); state.navMobile = !state.navMobile">Ordina Asporto</span>
+      <span v-if="state.settings[0].status == 2" @click="movep(2); state.navMobile = !state.navMobile">Prenota Tavolo</span>
+      <a :href="'tel:' + state.contact.phone" v-if="state.settings[1].status == 1">Ordina Asporto</a>
+      <a :href="'tel:' + state.contact.phone" v-if="state.settings[0].status == 1">Prenota Tavolo</a>
       <span @click="movep(6); state.navMobile = !state.navMobile">News</span>
       <span @click="movep(5); state.navMobile = !state.navMobile">Chi siamo</span>
       <span @click="movep(4); state.navMobile = !state.navMobile">Contatti</span>
@@ -77,6 +80,9 @@
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
 .nav{
+  a{
+    text-decoration: none;
+  }
   background-color: $c4;
   padding: 1.2rem;
   display: flex;
@@ -89,7 +95,7 @@
     flex-grow: 1;
     padding-inline: 1rem;
     color: $ctext;
-    span{
+    span, a{
       font-size: clamp(17px, 2.4vw, 20px);
       font-family: "Jomhuria", serif;
     }
@@ -162,7 +168,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  span{
+  span, a{
     display: none;
     opacity: 0;
     font-size: clamp(25px, 3.3vw, 32px);
@@ -173,7 +179,7 @@
 }
 .menu-tendina-on{
   opacity: 1;
-  span{
+  span, a{
     display: block;
     opacity: 1;
   }
@@ -186,7 +192,7 @@
   }
   .right{
     justify-content: flex-end !important;
-    span{
+    span, a{
       display: none;
     }
     .icon-menu{

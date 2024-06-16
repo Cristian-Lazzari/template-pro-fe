@@ -15,7 +15,37 @@ export const state = reactive({
 
   //---2-Gestione interfaccia setting
 
+  settings : [
+    {
+      'name' : 'tavoli',
+      'status' : 0,
+      'property' : null,
+    },
+    {
+      'name' : 'asporto',
+      'status' : 0,
+      'property' : null,
+    },
+    {
+      'name' : 'ferie',
+      'status' : 0,
+      'property' : {
+        'from': '--/--/---',
+        'to': '--/--/---'
+      },
+    },
+    {
+      'name' : 'domicilio',
+      'status' : 0,
+      'property' : null,
+    },
+    {
+      'name' : 'comuni per il domicilio',
+      'status' : 0,
+      'property' : [],
+    },
 
+  ],
   //-----2-a-Dati
   contact : {
     'email' : 'email',

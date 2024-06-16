@@ -70,15 +70,23 @@ body{
     overflow-x: auto;
     flex-grow: 1;
     flex-shrink: 1;
-    .page{
+      .page{
+        
+        padding: 2rem;
+      }
+      }
       
-      padding: 2rem;
-    }
-    }
-    
-    }
+      }
 @media (max-width: $bp_sm) {
-  
+        
+  .page{
+    
+    padding: .5rem .5rem 50vh;
+    h1{
+      margin-bottom: 2vh;
+      font-size: $fs-xlg;
+    }
+  }
 
   
 }
