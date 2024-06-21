@@ -462,7 +462,7 @@
     animation: bodycat1 .3s ease-in-out;
     }
     .cont{
-      max-height: 70vh;
+      max-height: 60vh;
       width: 100%;
       display: flex;
       flex-direction: column;
