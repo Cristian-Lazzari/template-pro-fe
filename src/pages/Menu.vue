@@ -89,6 +89,7 @@
       },
       
       async getProduct(c_Id){
+        this.openCategory = false
         this.products = []
         const products = await axios.get(state.baseUrl + "api/products", {
 					params: {
@@ -280,7 +281,7 @@
 .show-p-active{
   border-top: 3px solid white;
   opacity: 1;
-  height: 85vh;
+  height: 71vh;
   transition: opacity .1s ease-in , height .3s ease-in;
   .show-close, .image-c, .sect{
     display: flex;
@@ -413,7 +414,7 @@
     right: 3%;
     z-index: 12;
     h1{
-      text-shadow: 4px 4px 4px black;
+      text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.506);
     }
   }
   .category{
@@ -452,7 +453,7 @@
     animation: bodycat1 .3s ease-in-out;
     }
     .cont{
-      max-height: 40vh;
+      max-height: 80vh;
       width: 100%;
       display: flex;
       flex-direction: column;
