@@ -135,7 +135,7 @@
 
 <template>
   <div class="container" :class="openCategory ? 'container-over' : ''">
-    <div class="top-c">
+    <div class="top-c" v-if="!state.navMobile && !selectedItem.opened">
       <h1>Menu</h1>
       <div class="category"  :class="openCategory ? 'category-on' : ''">
         <div class="body" @click="openCategory = !openCategory">

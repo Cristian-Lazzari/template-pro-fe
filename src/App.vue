@@ -61,7 +61,7 @@ body{
   z-index: 2;
   .nav{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.56);
-    z-index: 10;
+    z-index: 1000;
   }
   .sub-page{
     height: 100%;
