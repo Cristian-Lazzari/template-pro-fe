@@ -88,7 +88,7 @@ body{
 @media (max-width: $bp_sm) {
         
   #page{
-    padding: .5rem .5rem 50vh;
+    padding: .5rem 8px 50vh;
     
   }
 

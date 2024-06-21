@@ -134,9 +134,9 @@
 </script>
 
 <template>
-  <div class="container" :class="openCategory ? 'container-over' : ''">
+  <div class="container" :class="openCategory ? 'container-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
     <div class="top-c" v-if="!state.navMobile && !selectedItem.opened">
-      <h1>Menu</h1>
+      <h1 v-if="!openCategory" >Menu</h1>
       <div class="category"  :class="openCategory ? 'category-on' : ''">
         <div class="body" @click="openCategory = !openCategory">
           <p class="cat_active"><span>{{ category.name }}</span> - Scegli la categoria</p>
@@ -154,7 +154,7 @@
       </div>
     </div>
     <h2>Categoria : {{category.name}}</h2>
-    <div class="cont-p">
+    <div class="cont-p" >
       <div class="product-card" v-for="p in products" :key="p.id" @click="openShow(p, selectedItem)">
         <div class="image-cont" :style="'background-image:' + state.getImageUrl(p.img)">
           <!-- <div class="image-cont" :style="state.getImgshow(p.img)"> -->
@@ -514,6 +514,7 @@
         justify-content: flex-end;
         align-items: flex-end;
         padding: 3px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.324);
         .allergiens{
           width: 100%;
           display: flex;
@@ -527,7 +528,7 @@
             border-radius: 100%;
             background-color: rgba(255, 255, 255, 0.658);
             width: 30px;
-            box-shadow: 2px 2px 4px black;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.346);
           }
         }
       }
@@ -549,7 +550,7 @@
   }
   @media (max-width: $bp_md) {
     .cont-p{
-      gap: 15px !important;
+      gap: 6px !important;
       .product-card{
         width: 100% !important;
         flex-direction: row-reverse !important;
@@ -557,7 +558,7 @@
         flex-wrap: wrap;
         text-align: right;
         padding: .6rem;
-        gap: 7px !important;
+        gap: 4px !important;
         .image-cont{
           height: 70px !important;
           width: 60px;
@@ -571,6 +572,7 @@
           overflow: auto;
           flex-wrap: nowrap !important;
           gap: 4px !important;
+          padding: 10px 0;
           img{
             border-radius: 9px !important;
             width: 22px !important;
