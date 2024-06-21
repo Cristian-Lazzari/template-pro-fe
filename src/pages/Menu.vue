@@ -347,8 +347,8 @@
         background-image: url('../../public/img/o-c.png');
         background-position: center;
         background-size: cover;
-        height: 18px;
-        width: 18px;
+        height: 12px;
+        aspect-ratio: 1.8;
         transition: all .3s ease-in-out;
       }
     }
@@ -363,11 +363,12 @@
       border-radius: 15px;
       background-color: $cbgText;
       p{
+        margin: 0 auto;
         font-size: $fs_lg;
         font-family: $fm_2 !important;
         animation: comparsatesto1 .3s ease-in-out;
       }
-      animation: comparsatesto .3s ease-in-out;
+      //animation: comparsatesto .3s ease-in-out;
     }
   
   }
@@ -421,24 +422,28 @@
       text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.506);
     }
     .category{
-    width: fit-content;
-    padding: .5rem 1.4rem;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $c4;
-    font-size: $fs_md;
-    
+      width: fit-content;
+      padding: .5rem 1.4rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $c4;
+      font-size: $fs_md;
+      //animation: bodycat2 0.6s ease;
+  
+      
       span{
         font-family: $fm_1;
       }
-    
+      
     .body{
       display: flex;
       justify-content: space-around;
       align-items: center;
-      animation: bodycat2 .3s ease-in-out;
+      animation: bodycat2 0.6s ease;
+      
+      
     }
     .cont{
       display: none;
@@ -450,13 +455,14 @@
     padding: 2rem;
     width: 90%;
     overflow: hidden;
+    animation: bodycat1 0.5s ease;
     
   .body{
     display: none;
     animation: bodycat1 .3s ease-in-out;
     }
     .cont{
-      max-height: 80vh;
+      max-height: 70vh;
       width: 100%;
       display: flex;
       flex-direction: column;
