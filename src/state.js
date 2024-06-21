@@ -2,6 +2,7 @@ import { reactive } from "vue";
 
 export const state = reactive({
   baseUrl: "http://127.0.0.1:8000/",
+  baseUrl:"http://dpf.future-plus.it/",
   domain: "http://dpf.future-plus.it/",
   getImageUrl(image) {
     return this.baseUrl + "public/storage/" + image;

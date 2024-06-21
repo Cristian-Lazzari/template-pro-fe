@@ -135,19 +135,21 @@
 
 <template>
   <div class="container" :class="openCategory ? 'container-over' : ''">
-    <h1>Menu</h1>
-    <div class="category"  :class="openCategory ? 'category-on' : ''">
-      <div class="body" @click="openCategory = !openCategory">
-        <span class="cat_active">{{ category.name }} - Scegli la categoria</span>
-      </div>
-      <div class="cont">
-        <div class="head">
-          <h3>Scegli una categpria</h3>
-          <div class="close" @click="openCategory = false" >x</div>
+    <div class="top-c">
+      <h1>Menu</h1>
+      <div class="category"  :class="openCategory ? 'category-on' : ''">
+        <div class="body" @click="openCategory = !openCategory">
+          <p class="cat_active"><span>{{ category.name }}</span> - Scegli la categoria</p>
         </div>
-        <div class="cat-cont">
-          <div @click="getProduct(null)" class="tutti">Tutti</div>
-          <div @click="getProduct(c.id)" v-for="c in categories" :key="c.id" >{{ c.name }}</div>
+        <div class="cont">
+          <div class="head">
+            <h3>Scegli una categoria</h3>
+            <img class="close" @click="openCategory = false" src="../../public/img/close-x.png" >
+          </div>
+          <div class="cat-cont">
+            <div @click="getProduct(null)" class="tutti">Tutti</div>
+            <div @click="getProduct(c.id)" v-for="c in categories" :key="c.id" >{{ c.name }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -402,24 +404,37 @@
   z-index: 4;
 }
 .container{
-  .category{
+  .top-c{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     position: sticky;
-    top: 3%;
+    top: 1%;
     right: 3%;
-    margin: 20px 0 15px auto;
+    z-index: 12;
+    h1{
+      text-shadow: 4px 4px 4px black;
+    }
+  }
+  .category{
     width: fit-content;
-    padding: 1rem 2rem;
+    padding: .5rem 1.4rem;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 12;
     background-color: $c1;
     font-size: $fs_md;
+    
+      span{
+        font-family: $fm_1;
+      }
+    
     .body{
       display: flex;
       justify-content: space-around;
       align-items: center;
+      animation: bodycat2 .3s ease-in-out;
     }
     .cont{
       display: none;
@@ -434,6 +449,7 @@
     
   .body{
     display: none;
+    animation: bodycat1 .3s ease-in-out;
     }
     .cont{
       max-height: 40vh;
@@ -443,6 +459,11 @@
       .head{
         display: flex;
         justify-content: space-between;
+        align-items: center;
+
+        img{
+          width: 15px;
+        }
       }
       .cat-cont{
         overflow: auto;
@@ -458,6 +479,7 @@
           border: 1px solid white;
           border-radius: 10px;
           width: 100% !important;
+          font-family: $fm_1;
         }
       }
       
