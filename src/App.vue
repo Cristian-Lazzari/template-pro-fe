@@ -73,8 +73,11 @@ body{
     flex-shrink: 1;
       .page{
         h1{
-          margin-bottom: 2vh;
+          width: fit-content;
           font-size: $fs_xlg;
+        } h2{
+          margin-bottom: 1.3vh;
+          font-size: $fs_lg;
         }
         
         padding: 1.5rem 1.5rem 50vh;

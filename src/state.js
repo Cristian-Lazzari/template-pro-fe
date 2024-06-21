@@ -6,7 +6,9 @@ export const state = reactive({
   getImageUrl(image) {
     return this.baseUrl + "public/storage/" + image;
   },
-
+  getImgshow(img){
+    return 'background-image:url("' + this.baseUrl + "public/storage/" + img + '")';
+  },
   //---1-Gestione interfaccia grafica
 
   navMobile: false,
