@@ -406,9 +406,10 @@
 }
 .container{
   .top-c{
+    margin: 1rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     position: sticky;
     top: 1%;
     right: 3%;
@@ -424,7 +425,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $c1;
+    background-color: $c4;
     font-size: $fs_md;
     
       span{
