@@ -29,12 +29,14 @@
           description: "",
           ingredients: [],
           allergiens: [],
+          special: [],
           allergiens_top: [],
           category_name: '',
         },
       };
     },
     methods:{
+      //gestione show prodotto
       open_x(n){
         if(n == 1){
           this.selectedItem.x_ing = !this.selectedItem.x_ing 
@@ -58,6 +60,7 @@
         si.description = p.description
         si.price = p.price
         si.id = p.id
+        si.special = p.special
         si.ingredients = p.ingredients
         si.allergiens = p.allergiens
         si.category_name = p.category.name
@@ -71,65 +74,92 @@
         si.id = ''
         si.ingredients = []
         si.allergiens = []
+        si.special = []
       },
-
+      //funzioni per testo ingredienti
+      capitalizeFirstLetter(string) {
+        if (typeof string !== 'string' || string.length === 0) {
+          return string; // Gestisce il caso in cui l'input non è una stringa o è una stringa vuota
+        }
+        
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      },
       fixtag(arr){
         let arrtag='';
         arr.forEach((element, i) => {
-          
-          if(i+1==arr.length){
-            
+          if( i+1 ==arr.length){  
             arrtag = arrtag + element.name + '.'
           }else{
             arrtag = arrtag + element.name + ', '
+            if(i == 0){
+              arrtag = this.capitalizeFirstLetter(arrtag)
+            }
             
           }
         });
         return arrtag
       },
-      
+      //filtraggio ingredienti
       async getProduct(c_Id){
         this.openCategory = false
         this.products = []
-        const products = await axios.get(state.baseUrl + "api/products", {
+        this.allergiens = []
+        if(c_Id !== 0){
+          let products = await axios.get(state.baseUrl + "api/products", {
 					params: {
 						category: c_Id,
 					}})
-        this.products = products.data.results
-        this.products.forEach(e => {
-          let oldallergiens = JSON.parse(e.allergiens, true)
-          console.log(oldallergiens)
-          console.log('ciao')
-          const newallergiens = oldallergiens.map(p => this.allergiens[p])
-          e.allergiens = newallergiens
-        });
-        this.categories.forEach(c => {
-          if(c.id == c_Id){
-            this.category = c
-          }else if(c_Id == null){
-            this.category= {
-              'id' : '0',
-              'name': 'Tutti',
-              'icon' : ''                                                                                 
+          this.products = products.data.results
+          this.allergiens = products.data.allergiens
+          this.categories.forEach(c => {
+            if(c.id == c_Id){
+              this.category = c
+            }else if(c_Id == null){
+              this.category= {
+                'id' : '0',
+                'name': 'Tutti',
+                'icon' : ''                                                                                 
+              }
             }
-          }
-        });
+          });
+
+          this.products.forEach(e => {
+            let oldallergiens = JSON.parse(e.allergiens, true)
+            const newallergiens = oldallergiens.map(p => this.allergiens[p])
+            e.allergiens = newallergiens
+          });
+
+        }else{
+          let products = await axios.get(state.baseUrl + "api/products", {})
+          this.products = products.data.results
+          this.allergiens = products.data.allergiens
+
+          this.products.forEach(e => {
+            e.special = []
+            let oldallergiens = JSON.parse(e.allergiens, true)
+            e.allergiens = []
+            let newallergiens = oldallergiens.map(p => this.allergiens[p])
+            for (let i = 0; i < newallergiens.length; i++) {
+              let el = newallergiens[i];
+              if(el.special == 0){
+                e.allergiens.push(el)
+              }else{
+                e.special.push(el)
+              }       
+            }
+          });
+
+        }     
       }
     },
     async mounted() {
-      const products = await axios.get(state.baseUrl + "api/products", {})
-      this.products = products.data.results
-
+      
       const categories = await axios.get(state.baseUrl + "api/categories", {})
       this.categories = categories.data.results
       this.categories.shift()
 
-      this.allergiens = products.data.allergiens
-      this.products.forEach(e => {
-        let oldallergiens = JSON.parse(e.allergiens, true)
-        const newallergiens = oldallergiens.map(p => this.allergiens[p])
-        e.allergiens = newallergiens
-      });
+      this.getProduct(0);
+     
     },
   };
 </script>
@@ -138,7 +168,7 @@
   <div class="container" :class="openCategory ? 'container-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
     <div class="top-c" v-if="!state.navMobile && !selectedItem.opened">
       <h1 v-if="!openCategory" >Menu</h1>
-      <div class="category"  :class="openCategory ? 'category-on' : ''">
+      <div class=""  :class="openCategory ? 'category-on' : 'category'">
         <div class="body" @click="openCategory = !openCategory">
           <p class="cat_active"><span>{{ category.name }}</span> - Scegli la categoria</p>
         </div>
@@ -160,7 +190,7 @@
         <div class="image-cont" :style="'background-image:' + state.getImageUrl(p.img)">
           <!-- <div class="image-cont" :style="state.getImgshow(p.img)"> -->
           <div class="allergiens">
-            <img  v-for="a in p.allergiens" :key="a.name" :src="a.img" alt="">
+            <img  v-for="a in p.special" :key="a.name" :src="a.img" alt="">
           </div>
         </div>
         <div class="text">
@@ -180,7 +210,7 @@
         <h3>{{ selectedItem.name }}</h3>
         <div class="bottom">
           <div class="allergiens">
-            <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
+            <img v-for="a in selectedItem.special" :key="a.name" :src="a.img" alt="">
           </div>
           <span>{{ selectedItem.category_name }}</span>
         </div>
@@ -430,9 +460,7 @@
       align-items: center;
       background-color: $c4;
       font-size: $fs_md;
-      //animation: bodycat2 0.6s ease;
-  
-      
+      animation: bodycat2 0.6s ease;    
       span{
         font-family: $fm_1;
       }
@@ -441,7 +469,7 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      animation: bodycat2 0.6s ease;
+      //animation: bodycat2 0.6s ease;
       
       
     }
@@ -451,6 +479,14 @@
     }
   }
   .category-on{
+    padding: .5rem 1.4rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $c4;
+    font-size: $fs_md;
+
     margin: 0 auto;
     padding: 2rem;
     width: 90%;
