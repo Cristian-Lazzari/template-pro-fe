@@ -268,10 +268,11 @@
       </div>
       
     </div>
-    <div class="cart">
-      <span>{{ state.cart.products.length }}</span>
-      <p>Totale: € {{ state.cart.totprice }}</p>
-    </div>
+      <div class="cart">
+        <span>{{ state.cart.products.length }}</span>
+        <p>Totale: € {{ state.cart.totprice }}</p>
+      </div>
+
   </div>
   
 </template>
@@ -279,31 +280,32 @@
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
 
-.cart{
-  position: absolute;
-  right: 0;
-  bottom: $d-foo;
-  height: 100px;
-  width: 100px;
-  background-image: url('../../public/img/menu-mobile.png');
-  background-position:  center;
-  background-size:  cover;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 17px 12px 4px; 
-  align-items: flex-end;
-  span{
-    padding: 2px;
-    background-color: white;
-    color: black;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+  .cart{
+    right: 0;
+    bottom: $d-foo;
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    background-image: url('../../public/img/menu-mobile.png');
+    background-position:  center;
+    background-size:  cover;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 17px 12px 4px; 
+    align-items: flex-end;
+    span{
+      padding: 2px;
+      background-color: white;
+      color: black;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+    p{
+      white-space: nowrap;
+    }
+    
   }
-  p{
-    white-space: nowrap;
-  }
-  
-}
+
 </style>
