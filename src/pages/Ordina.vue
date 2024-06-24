@@ -268,22 +268,38 @@
       </div>
       
     </div>
+    <div class="cart-c">
+      <div class="next">Completa Ordine</div>
       <div class="cart">
         <span>{{ state.cart.products.length }}</span>
         <p>Totale: € {{ state.cart.totprice }}</p>
       </div>
-
+    </div>
   </div>
   
 </template>
 
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
-
+.cart-c{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: fixed;
+  bottom: $d-foo;
+  right: 0;
+  .next{
+    margin: 14px;
+    padding: 1.2rem 2rem;
+    background-color: $cText;
+    text-transform: uppercase;
+    border-radius: 20px;
+    font-size: $fs_lg;
+    color: $cCard;
+    box-shadow: 2px -2px 15px rgba(0, 0, 0, 0.358);
+  }
   .cart{
-    right: 0;
-    bottom: $d-foo;
-    position: fixed;
     height: 100px;
     width: 100px;
     background-image: url('../../public/img/menu-mobile.png');
@@ -307,5 +323,5 @@
     }
     
   }
-
+}
 </style>
