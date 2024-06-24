@@ -16,7 +16,10 @@ export const state = reactive({
   navMobile: false,
 
 
-
+  cart:{
+    'totprice' : 0,
+    'products' : [],
+  },
   //---2-Gestione interfaccia setting
 
   settings : [

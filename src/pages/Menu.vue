@@ -22,16 +22,15 @@
           x_al: false,
           x_desc: false,
           x_ing: false,
-          id: "",
-          name: "",
+          id: '',
+          name: '',
           price: 0,
-          image: "",
-          description: "",
+          image: '',
+          description: '',
+          category_name: '',
           ingredients: [],
           allergiens: [],
           special: [],
-          allergiens_top: [],
-          category_name: '',
         },
       };
     },
@@ -165,7 +164,7 @@
 </script>
 
 <template>
-  <div class="container" :class="openCategory ? 'container-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
+  <div class="container-m" :class="openCategory ? 'container-m-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
     <div class="top-c" v-if="!state.navMobile && !selectedItem.opened">
       <h1 v-if="!openCategory" >Menu</h1>
       <div class=""  :class="openCategory ? 'category-on' : 'category'">
@@ -215,22 +214,22 @@
           <span>{{ selectedItem.category_name }}</span>
         </div>
       </div>
-      <div class="sect">
+      <div class="sect" v-if="selectedItem.ingredients.length !== 0" >
         <div @click="open_x(1)" :class="selectedItem.x_ing ? 'closer' : ''" class="head">
           <div class="name">Ingredienti</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_ing ? 'body-on' : ''" class="body">
+        <div v-if="selectedItem.x_ing" class="body">
           <p>{{ fixtag(selectedItem.ingredients) }}</p>
         </div>
       </div>
-      <div class="sect">
+      <div class="sect" v-if="selectedItem.description !== null">
         <div @click="open_x(2)" :class="selectedItem.x_desc ? 'closer' : ''" class="head">
           <div class="name">Descrizione</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_desc ? 'body-on' : ''" class="body">
-          <p>{{ selectedItem.description }} descrizione del prodotto</p>
+        <div v-if="selectedItem.x_desc" class="body">
+          <p>{{ selectedItem.description }}</p>
         </div>
       </div>
       <div class="sect">
@@ -238,8 +237,9 @@
           <div class="name">Allergieni</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_al ? 'body-on' : ''" class="body allergiens">
+        <div v-if="selectedItem.x_al" class="body allergiens">
           <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
+          <p v-if="selectedItem.allergiens.length == 0" >Nessun allergiene presente</p>
         </div>
       </div>
       <div class="bottom-bar">
@@ -254,388 +254,6 @@
 
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
-.show-p{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 0vh ;
-  opacity: 0;
-  width: 100%;
-  background-color: $cCard;
-  z-index: 300;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.624);
-  transition: opacity .1s ease-in , height .3s ease-in;
-  .show-close{
-    display: none;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-    color: black;
-    width: 100%;
-    position: absolute;
-    top: -37px;
-    height: 37px;
-    background-image: url('../../public/img/top-pop.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0px -3px 10px rgba(0, 0, 0, 0.617));
-  }
-  .image-c{
-    display: none;
-    background-image: url('../../public/img/pizza-1.png') !important;
-    
-    }
-  .sect{
-    display: none;
 
-  }
-  .allergiens{
-    display: flex;
-    gap: 3px;
-    img{
-      padding: 3px;
-      aspect-ratio: 1;
-      border-radius: 100%;
-      background-color: rgba(255, 255, 255, 0.658);
-      width: 30px;
-      box-shadow: 2px 2px 4px black;
-    }
-  }
 
-}
-.show-p-active{
-  //border-top: 3px solid white;
-  padding:  .8rem 1rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  opacity: 1;
-  height: 71vh;
-  transition: opacity .1s ease-in , height .3s ease-in;
-  .show-close, .image-c, .sect{
-    display: flex;
-  }
-  .image-c{
-    height: 35%;
-    background-size:  cover ;
-    background-position: center;
-    border-radius: 20px;
-    // border-bottom-left-radius: 15px;
-    // border-bottom-right-radius: 15px;
-    position: relative;
-    z-index: 300;
-    padding: .7rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .bottom{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    h3, .allergiens, span{
-      position: relative;
-      z-index: 300;
-    }
-    h3{
-      width: 100%;
-      font-size: $fs_lg;
-    }
-    span{
-      font-size: $fs_sm;
-
-    }
-  }
-  .image-c::before{
-    background: linear-gradient( #000000ce , #f7f7f700 );
-    position: absolute;
-    content: '';
-    display: block;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    border-radius: 20px;
-  }
-  .sect{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    .head{
-      display: flex;
-      width: 95%;
-      margin: 0 auto;
-      justify-content: space-between; 
-      opacity: .6;
-      font-size: $fs_md;   
-      .opener{
-        background-image: url('../../public/img/o-c.png');
-        background-position: center;
-        background-size: cover;
-        height: 12px;
-        aspect-ratio: 1.8;
-        transition: all .3s ease-in-out;
-      }
-    }
-    .closer{
-      opacity: 1;
-      .opener{
-        transform: rotateX(180deg);
-      }
-    }
-    .body{
-      padding: 1rem;
-      border-radius: 15px;
-      background-color: $cbgText;
-      p{
-        margin: 0 auto;
-        font-size: $fs_lg;
-        font-family: $fm_2 !important;
-        animation: comparsatesto1 .3s ease-in-out;
-      }
-      //animation: comparsatesto .3s ease-in-out;
-    }
-  
-  }
-  .bottom-bar{
-    padding: 1rem;
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    color: black;
-    background-color: rgba(255, 255, 255, 0.333);
-    .price{
-      font-size: $fs_lg;
-    }
-    .btn-add{
-      background-color: white;
-      color: black;
-      padding: .4rem 1.2rem;
-      border-radius: 30px;
-    }
-  }
-  
- 
-    
-}
-.container-over::after{
-  content: '';
-  display: block;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.439);
-  z-index: 4;
-}
-.container{
-  .top-c{
-    margin: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 1%;
-    right: 3%;
-    z-index: 12;
-    h1{
-      text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.506);
-    }
-    .category{
-      width: fit-content;
-      padding: .5rem 1.4rem;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: $c4;
-      font-size: $fs_md;
-      animation: bodycat2 0.6s ease;    
-      span{
-        font-family: $fm_1;
-      }
-      
-    .body{
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      //animation: bodycat2 0.6s ease;
-      
-      
-    }
-    .cont{
-      display: none;
-  
-    }
-  }
-  .category-on{
-    padding: .5rem 1.4rem;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $c4;
-    font-size: $fs_md;
-
-    margin: 0 auto;
-    padding: 2rem;
-    width: 90%;
-    overflow: hidden;
-    animation: bodycat1 0.5s ease;
-    
-  .body{
-    display: none;
-    animation: bodycat1 .3s ease-in-out;
-    }
-    .cont{
-      max-height: 60vh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      .head{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        img{
-          width: 15px;
-        }
-      }
-      .cat-cont{
-        overflow: auto;
-        width: 100%;
-        
-        .tutti{
-          margin-top: 20px;
-        }
-        div{
-          margin-bottom: 3px;
-          padding: 5px 10px;
-          text-align: center;
-          border: 1px solid white;
-          border-radius: 10px;
-          width: 100% !important;
-          font-family: $fm_1;
-        }
-      }
-      
-    }
-  }
-  }
- 
-  .cont-p{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    //align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    .product-card{
-      flex-grow: 1;
-      width: calc((100% - 2rem) / 2);
-      background-color: $cCard;
-      border-radius: 10px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      .image-cont{
-        background-image: url('../../public/img/pizza-2.png');
-        height: 150px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 9px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding: 3px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.324);
-        .allergiens{
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 10px;
-          flex-wrap: wrap;
-          img{
-            padding: 3px;
-            aspect-ratio: 1;
-            border-radius: 100%;
-            background-color: rgba(255, 255, 255, 0.658);
-            width: 30px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.346);
-          }
-        }
-      }
-      .text{
-        text-align: right;
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-        font-size: $fs_xsm;
-        h3{
-
-          font-size: $fs_md
-        }
-      }
-      .price{
-        font-size: $fs_lg
-      }
-    }
-  }
-  @media (max-width: $bp_md) {
-    .cont-p{
-      gap: 6px !important;
-      .product-card{
-        width: 100% !important;
-        flex-direction: row-reverse !important;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        text-align: right;
-        padding: .6rem;
-        gap: 4px !important;
-        .image-cont{
-          height: 70px !important;
-          width: 60px;
-        }
-        .allergiens{
-          position: absolute;
-          bottom: -5px;
-          left: 10px;
-          justify-content: flex-start !important;
-          max-width: 60%;
-          overflow: auto;
-          flex-wrap: nowrap !important;
-          gap: 4px !important;
-          padding: 10px 0;
-          img{
-            border-radius: 9px !important;
-            width: 22px !important;
-          }
-          
-        }
-        .text{
-          flex-shrink: 1;
-          text-align: left;
-          width: calc(100% - 70px);
-          
-        }
-        .price{
-          width: 100%;
-        }
-      }
-    }
-  }
-}
 </style>

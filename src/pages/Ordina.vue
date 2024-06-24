@@ -19,36 +19,57 @@
         },
         selectedItem: {
           opened: false,
-          x_al: false,
-          x_desc: false,
+          x_details: false,
           x_ing: false,
-          id: "",
-          name: "",
+          x_opt: true,
+          x_ext: false,
+          id: '',
+          name: '',
           price: 0,
-          image: "",
-          description: "",
+          image: '',
+          description: '',
+          category_name: '',
           ingredients: [],
           allergiens: [],
-          allergiens_top: [],
-          category_name: '',
+          special: [],
+          
+          options: [],
+          extraing: [],
+          extra_price: 0,
+          counter: 1,
+          category_id: 0,
+          
+          type_plate: 0,
+          slot_plate: 0,
+          tag_set: 0,
+
         },
       };
     },
     methods:{
-      open_x(n){
+      //gestione show prodotto
+      async open_x(n){
         if(n == 1){
           this.selectedItem.x_ing = !this.selectedItem.x_ing 
-          this.selectedItem.x_desc = false 
+          this.selectedItem.x_details = false 
           this.selectedItem.x_al = false 
         } else if(n==2){
-          this.selectedItem.x_desc = !this.selectedItem.x_desc 
+          this.selectedItem.x_details = !this.selectedItem.x_details 
           this.selectedItem.x_al = false 
           this.selectedItem.x_ing = false                       
         } else if(n==3){
           this.selectedItem.x_al = !this.selectedItem.x_al 
           this.selectedItem.x_ing = false 
-          this.selectedItem.x_desc = false 
+          this.selectedItem.x_details = false 
         }
+         else if(n==4){
+          this.selectedItem.x_al = !this.selectedItem.x_al 
+          this.selectedItem.x_ing = false 
+          this.selectedItem.x_details = false 
+        }
+        let ingredients = await axios.get(state.baseUrl + "api/ingredients", {})
+        this.ingredients = ingredients.data.results
+
 
       },
       openShow(p, si){
@@ -58,6 +79,7 @@
         si.description = p.description
         si.price = p.price
         si.id = p.id
+        si.special = p.special
         si.ingredients = p.ingredients
         si.allergiens = p.allergiens
         si.category_name = p.category.name
@@ -71,74 +93,101 @@
         si.id = ''
         si.ingredients = []
         si.allergiens = []
+        si.special = []
       },
-
+      //funzioni per testo ingredienti
+      capitalizeFirstLetter(string) {
+        if (typeof string !== 'string' || string.length === 0) {
+          return string; // Gestisce il caso in cui l'input non è una stringa o è una stringa vuota
+        }
+        
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      },
       fixtag(arr){
         let arrtag='';
         arr.forEach((element, i) => {
-          
-          if(i+1==arr.length){
-            
+          if( i+1 ==arr.length){  
             arrtag = arrtag + element.name + '.'
           }else{
             arrtag = arrtag + element.name + ', '
+            if(i == 0){
+              arrtag = this.capitalizeFirstLetter(arrtag)
+            }
             
           }
         });
         return arrtag
       },
-      
+      //filtraggio ingredienti
       async getProduct(c_Id){
         this.openCategory = false
         this.products = []
-        const products = await axios.get(state.baseUrl + "api/products", {
+        this.allergiens = []
+        if(c_Id !== 0){
+          let products = await axios.get(state.baseUrl + "api/products", {
 					params: {
 						category: c_Id,
 					}})
-        this.products = products.data.results
-        this.products.forEach(e => {
-          let oldallergiens = JSON.parse(e.allergiens, true)
-          console.log(oldallergiens)
-          console.log('ciao')
-          const newallergiens = oldallergiens.map(p => this.allergiens[p])
-          e.allergiens = newallergiens
-        });
-        this.categories.forEach(c => {
-          if(c.id == c_Id){
-            this.category = c
-          }else if(c_Id == null){
-            this.category= {
-              'id' : '0',
-              'name': 'Tutti',
-              'icon' : ''                                                                                 
+          this.products = products.data.results
+          this.allergiens = products.data.allergiens
+          this.categories.forEach(c => {
+            if(c.id == c_Id){
+              this.category = c
+            }else if(c_Id == null){
+              this.category= {
+                'id' : '0',
+                'name': 'Tutti',
+                'icon' : ''                                                                                 
+              }
             }
-          }
-        });
+          });
+
+          this.products.forEach(e => {
+            let oldallergiens = JSON.parse(e.allergiens, true)
+            const newallergiens = oldallergiens.map(p => this.allergiens[p])
+            e.allergiens = newallergiens
+          });
+
+        }else{
+          let products = await axios.get(state.baseUrl + "api/products", {})
+          this.products = products.data.results
+          this.allergiens = products.data.allergiens
+
+          this.products.forEach(e => {
+            e.special = []
+            let oldallergiens = JSON.parse(e.allergiens, true)
+            e.allergiens = []
+            let newallergiens = oldallergiens.map(p => this.allergiens[p])
+            for (let i = 0; i < newallergiens.length; i++) {
+              let el = newallergiens[i];
+              if(el.special == 0){
+                e.allergiens.push(el)
+              }else{
+                e.special.push(el)
+              }       
+            }
+          });
+
+        }     
       }
     },
     async mounted() {
-      const products = await axios.get(state.baseUrl + "api/products", {})
-      this.products = products.data.results
-
+      
       const categories = await axios.get(state.baseUrl + "api/categories", {})
       this.categories = categories.data.results
       this.categories.shift()
 
-      this.allergiens = products.data.allergiens
-      this.products.forEach(e => {
-        let oldallergiens = JSON.parse(e.allergiens, true)
-        const newallergiens = oldallergiens.map(p => this.allergiens[p])
-        e.allergiens = newallergiens
-      });
+      this.getProduct(0);
+     
     },
   };
 </script>
 
 <template>
-  <div class="container" :class="openCategory ? 'container-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
+  <div class="container-m" :class="openCategory ? 'container-m-over' : ''" :style="openCategory ? 'overflow: hidden !important' : ''">
     <div class="top-c" v-if="!state.navMobile && !selectedItem.opened">
-      <h1 v-if="!openCategory" >Menu</h1>
-      <div class="category"  :class="openCategory ? 'category-on' : ''">
+      <h1 v-if="!openCategory" >Ordina</h1>
+      <div class=""  :class="openCategory ? 'category-on' : 'category'">
         <div class="body" @click="openCategory = !openCategory">
           <p class="cat_active"><span>{{ category.name }}</span> - Scegli la categoria</p>
         </div>
@@ -160,7 +209,7 @@
         <div class="image-cont" :style="'background-image:' + state.getImageUrl(p.img)">
           <!-- <div class="image-cont" :style="state.getImgshow(p.img)"> -->
           <div class="allergiens">
-            <img  v-for="a in p.allergiens" :key="a.name" :src="a.img" alt="">
+            <img  v-for="a in p.special" :key="a.name" :src="a.img" alt="">
           </div>
         </div>
         <div class="text">
@@ -180,27 +229,27 @@
         <h3>{{ selectedItem.name }}</h3>
         <div class="bottom">
           <div class="allergiens">
-            <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
+            <img v-for="a in selectedItem.special" :key="a.name" :src="a.img" alt="">
           </div>
           <span>{{ selectedItem.category_name }}</span>
         </div>
       </div>
-      <div class="sect">
+      <div class="sect" v-if="selectedItem.ingredients.length !== 0" >
         <div @click="open_x(1)" :class="selectedItem.x_ing ? 'closer' : ''" class="head">
           <div class="name">Ingredienti</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_ing ? 'body-on' : ''" class="body">
+        <div v-if="selectedItem.x_ing" class="body">
           <p>{{ fixtag(selectedItem.ingredients) }}</p>
         </div>
       </div>
-      <div class="sect">
-        <div @click="open_x(2)" :class="selectedItem.x_desc ? 'closer' : ''" class="head">
+      <div class="sect" v-if="selectedItem.description !== null">
+        <div @click="open_x(2)" :class="selectedItem.x_details ? 'closer' : ''" class="head">
           <div class="name">Descrizione</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_desc ? 'body-on' : ''" class="body">
-          <p>{{ selectedItem.description }} descrizione del prodotto</p>
+        <div v-if="selectedItem.x_details" class="body">
+          <p>{{ selectedItem.description }}</p>
         </div>
       </div>
       <div class="sect">
@@ -208,8 +257,9 @@
           <div class="name">Allergieni</div>
           <div class="opener"></div>
         </div>
-        <div v-if="selectedItem.x_al ? 'body-on' : ''" class="body allergiens">
+        <div v-if="selectedItem.x_al" class="body allergiens">
           <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
+          <p v-if="selectedItem.allergiens.length == 0" >Nessun allergiene presente</p>
         </div>
       </div>
       <div class="bottom-bar">
@@ -218,380 +268,42 @@
       </div>
       
     </div>
+    <div class="cart">
+      <span>{{ state.cart.products.length }}</span>
+      <p>Totale: € {{ state.cart.totprice }}</p>
+    </div>
   </div>
   
 </template>
 
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
-.show-p{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 0vh ;
-  opacity: 0;
-  width: 100%;
-  background-color: $cCard;
-  z-index: 300;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.624);
-  transition: opacity .1s ease-in , height .3s ease-in;
-  padding: 0 1rem 1rem;
+
+.cart{
+  position: absolute;
+  right: 0;
+  bottom: $d-foo;
+  height: 100px;
+  width: 100px;
+  background-image: url('../../public/img/menu-mobile.png');
+  background-position:  center;
+  background-size:  cover;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  .show-close{
-    display: none;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
+  justify-content: space-between;
+  padding: 17px 12px 4px; 
+  align-items: flex-end;
+  span{
+    padding: 2px;
+    background-color: white;
     color: black;
-    width: 100%;
-    position: absolute;
-    top: -37px;
-    height: 37px;
-    background-image: url('../../public/img/top-pop.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0px -3px 10px rgba(0, 0, 0, 0.617));
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
-  .image-c{
-    display: none;
-    background-image: url('../../public/img/pizza-1.png') !important;
-    
-    }
-  .sect{
-    display: none;
-
-  }
-  .allergiens{
-    display: flex;
-    gap: 3px;
-    img{
-      padding: 3px;
-      aspect-ratio: 1;
-      border-radius: 100%;
-      background-color: rgba(255, 255, 255, 0.658);
-      width: 30px;
-      box-shadow: 2px 2px 4px black;
-    }
-  }
-
-}
-.show-p-active{
-  border-top: 3px solid white;
-  opacity: 1;
-  height: 71vh;
-  transition: opacity .1s ease-in , height .3s ease-in;
-  .show-close, .image-c, .sect{
-    display: flex;
-  }
-  .image-c{
-    height: 35%;
-    background-size:  cover ;
-    background-position: center;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    position: relative;
-    z-index: 300;
-    padding: .7rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .bottom{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    h3, .allergiens, span{
-      position: relative;
-      z-index: 300;
-    }
-    h3{
-      width: 100%;
-      font-size: $fs_lg;
-    }
-    span{
-      font-size: $fs_sm;
-
-    }
-  }
-  .sect{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    .head{
-      display: flex;
-      width: 95%;
-      margin: 0 auto;
-      justify-content: space-between; 
-      opacity: .6;
-      font-size: $fs_md;   
-      .opener{
-        background-image: url('../../public/img/o-c.png');
-        background-position: center;
-        background-size: cover;
-        height: 18px;
-        width: 18px;
-        transition: all .3s ease-in-out;
-      }
-    }
-    .closer{
-      opacity: 1;
-      .opener{
-        transform: rotateX(180deg);
-      }
-    }
-    .body{
-      padding: 1rem;
-      border-radius: 15px;
-      background-color: $cbgText;
-      p{
-        font-size: $fs_lg;
-        font-family: $fm_2 !important;
-        animation: comparsatesto1 .3s ease-in-out;
-      }
-      animation: comparsatesto .3s ease-in-out;
-    }
-  
-  }
-  .bottom-bar{
-    padding: 1rem;
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    color: black;
-    background-color: rgba(255, 255, 255, 0.333);
-    .price{
-      font-size: $fs_lg;
-    }
-    .btn-add{
-      background-color: white;
-      color: black;
-      padding: .4rem 1.2rem;
-      border-radius: 30px;
-    }
+  p{
+    white-space: nowrap;
   }
   
-  .image-c::before{
-    background: linear-gradient( #000000ce , #f7f7f700 );
-    position: absolute;
-    content: '';
-    display: block;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 2;
-  }
-    
-}
-.container-over::after{
-  content: '';
-  display: block;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.439);
-  z-index: 4;
-}
-.container{
-  .top-c{
-    margin: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 1%;
-    right: 3%;
-    z-index: 12;
-    h1{
-      text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.506);
-    }
-  }
-  .category{
-    width: fit-content;
-    padding: .5rem 1.4rem;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $c4;
-    font-size: $fs_md;
-    
-      span{
-        font-family: $fm_1;
-      }
-    
-    .body{
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      animation: bodycat2 .3s ease-in-out;
-    }
-    .cont{
-      display: none;
-  
-    }
-  }
-  .category-on{
-    margin: 0 auto;
-    padding: 2rem;
-    width: 90%;
-    overflow: hidden;
-    
-  .body{
-    display: none;
-    animation: bodycat1 .3s ease-in-out;
-    }
-    .cont{
-      max-height: 80vh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      .head{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        img{
-          width: 15px;
-        }
-      }
-      .cat-cont{
-        overflow: auto;
-        width: 100%;
-        
-        .tutti{
-          margin-top: 20px;
-        }
-        div{
-          margin-bottom: 3px;
-          padding: 5px 10px;
-          text-align: center;
-          border: 1px solid white;
-          border-radius: 10px;
-          width: 100% !important;
-          font-family: $fm_1;
-        }
-      }
-      
-    }
-
-  }
-  
-  .cont-p{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    //align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    .product-card{
-      flex-grow: 1;
-      width: calc((100% - 2rem) / 2);
-      background-color: $cCard;
-      border-radius: 10px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      .image-cont{
-        background-image: url('../../public/img/pizza-2.png');
-        height: 150px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 9px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding: 3px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.324);
-        .allergiens{
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 10px;
-          flex-wrap: wrap;
-          img{
-            padding: 3px;
-            aspect-ratio: 1;
-            border-radius: 100%;
-            background-color: rgba(255, 255, 255, 0.658);
-            width: 30px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.346);
-          }
-        }
-      }
-      .text{
-        text-align: right;
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-        font-size: $fs_xsm;
-        h3{
-
-          font-size: $fs_md
-        }
-      }
-      .price{
-        font-size: $fs_lg
-      }
-    }
-  }
-  @media (max-width: $bp_md) {
-    .cont-p{
-      gap: 6px !important;
-      .product-card{
-        width: 100% !important;
-        flex-direction: row-reverse !important;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        text-align: right;
-        padding: .6rem;
-        gap: 4px !important;
-        .image-cont{
-          height: 70px !important;
-          width: 60px;
-        }
-        .allergiens{
-          position: absolute;
-          bottom: -5px;
-          left: 10px;
-          justify-content: flex-start !important;
-          max-width: 60%;
-          overflow: auto;
-          flex-wrap: nowrap !important;
-          gap: 4px !important;
-          padding: 10px 0;
-          img{
-            border-radius: 9px !important;
-            width: 22px !important;
-          }
-          
-        }
-        .text{
-          flex-shrink: 1;
-          text-align: left;
-          width: calc(100% - 70px);
-          
-        }
-        .price{
-          width: 100%;
-        }
-      }
-    }
-  }
 }
 </style>
