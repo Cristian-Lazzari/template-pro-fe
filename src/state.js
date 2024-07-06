@@ -1,8 +1,8 @@
 import { reactive } from "vue";
 
 export const state = reactive({
-  //baseUrl: "http://127.0.0.1:8000/",
-  baseUrl:"https://dpf.future-plus.it/",
+  baseUrl: "http://127.0.0.1:8000/",
+  //baseUrl:"https://dpf.future-plus.it/",
   //domain: "https://dpf.future-plus.it/",
   domain: "https://visionary-centaur-1b3d7b.netlify.app/",
   getImageUrl(image) {
@@ -12,16 +12,22 @@ export const state = reactive({
     return 'background-image:url("' + this.baseUrl + "public/storage/" + img + '")';
   },
   //---1-Gestione interfaccia grafica
-
+  
   navMobile: false,
-
+  checkOut_t: 2,
+  
+  //---2-Gestione order
 
   cart:{
     'totprice' : 0,
     'products' : [],
   },
-  //---2-Gestione interfaccia setting
-
+  
+  //---3-Gestione interfaccia date
+  mesi :['', 'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+  days_weeks :[' ','lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'],
+  giorniPerMese : [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  //---4-Gestione interfaccia setting
   settings : [
     {
       'name' : 'tavoli',
@@ -53,13 +59,12 @@ export const state = reactive({
     },
 
   ],
-  //-----2-a-Dati
+  //-----4-a-Dati
   contact : {
     'email' : 'email',
     'phone' : 'phone',
   },
-
-  //-----2-b-Funzioni 
+  //---5-Funzioni 
   movep(npage){ //1 asporto 2 tavoli 3 menu 4 contatti 5 story 6 news 
 
     if(npage == 1 ){
@@ -86,6 +91,8 @@ export const state = reactive({
       this.$router.replace("/")
     }
   },
+
+  
 
 
   

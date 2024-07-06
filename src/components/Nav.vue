@@ -16,7 +16,7 @@
           
         }else if(npage == 2){
           
-          this.$router.replace("/prenota")
+          this.$router.replace("/check-out")
           
         }else if(npage == 3){
           
