@@ -29,11 +29,6 @@ const router = createRouter({
       component: Contatti,
     },
     {
-      path: "/chi-siamo",
-      name: "chi-siamo",
-      component: ChiSiamo,
-    },
-    {
       path: "/news",
       name: "news",
       component: News,

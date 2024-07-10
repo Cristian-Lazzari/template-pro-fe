@@ -53,6 +53,24 @@
       };
     },
     methods:{
+      goCheckOut(){
+        this.state.checkOut_t = 2
+        console.log(state.cart.products)
+        let npezzi_c1 = 0
+        let npezzi_c2 = 0
+        this.state.cart.products.forEach(p => {
+          if(p.type_plate == 1){
+            npezzi_c1 += p.counter 
+          }else if(p.type_plate == 2) {
+            npezzi_c2 += p.counter 
+          }
+        });    
+        this.state.npezzi_c1 = npezzi_c1
+        this.state.npezzi_c2 = npezzi_c2
+        this.$router.replace("/check-out")
+      },
+
+
       editProd(a_r, type, ing, si){
         //console.log(ing)
         let checkRicalcolo = false
@@ -143,6 +161,7 @@
 
       addToCart(si){
         let itemCart = {
+          id : si.id,
           name : si.name,
           counter : si.counter,
           options : si.options,
@@ -245,6 +264,9 @@
 
       removeItem(p){
         this.state.cart.products.splice(p, 1)
+        if(this.state.cart.products.length == 0){
+          this.cartOpen = false
+        }
       },
 
       modCounter(a_r, si){
@@ -257,7 +279,6 @@
           si.counter ++
         }
       },
-
 
       openCart(){
         this.cartOpen = !this.cartOpen
@@ -310,6 +331,9 @@
         
       },
       async openShow(p, si){
+        if(this.cartOpen){
+          return
+        }
         this.ingredients = []
         si.opened = true
         si.name = p.name
@@ -318,6 +342,7 @@
         si.price = p.price
         si.id = p.id
         si.tag_set = p.tag_set
+        si.type_plate = p.type_plate
         si.special = p.special
         si.ingredients = p.ingredients
         si.allergiens = p.allergiens
@@ -329,7 +354,8 @@
 
         //metto allergieni giusti negli ingredienti del prodotto
         si.ingredients.forEach(e => {
-          let oldallergiens = JSON.parse(e.allergiens, true)
+          //console.log(JSON.parse(e.allergiens))
+          let oldallergiens = JSON.parse(e.allergiens)
           e.allergiens = []
           e.special = []
           let newallergiens = oldallergiens.map(p => this.allergiens[p])
@@ -389,7 +415,6 @@
               }       
             }
           });
-          console.log(this.ingredients)
         }else if(si.tag_set == 1){
           let ingredients = await axios.get(state.baseUrl + "api/getIngredient", {
           params: {
@@ -430,6 +455,15 @@
         si.add = []
         si.allergiens = []
         si.special = []
+        si.type_plate = 0
+        si.tag_set = 0
+        si.x_opt = true
+        si.x_ext = false
+        si.x_ing = false
+        si.x_details = false
+        this.ingredients = []
+        console.log(this.category.id)
+        this.getProduct(this.category.id)
       },
       //funzioni per testo ingredienti
       capitalizeFirstLetter(string) {
@@ -459,60 +493,37 @@
         this.openCategory = false
         this.products = []
         this.allergiens = []
-        if(c_Id !== 0){
-          let products = await axios.get(state.baseUrl + "api/products", {
-					params: {
-						category: c_Id,
-					}})
-          this.products = products.data.results
-          this.allergiens = products.data.allergiens
-          this.categories.forEach(c => {
-            if(c.id == c_Id){
-              this.category = c
-            }else if(c_Id == null){
-              this.category= {
-                'id' : '0',
-                'name': 'Tutti',
-                'icon' : ''                                                                                 
-              }
+        let products = await axios.get(state.baseUrl + "api/products", {
+        params: {
+          category: c_Id,
+        }})
+        this.products = products.data.results
+        this.allergiens = products.data.allergiens
+        this.categories.forEach(c => {
+          if(c.id == c_Id){
+            this.category = c
+          }else if(c_Id == null){
+            this.category= {
+              'id' : '0',
+              'name': 'Tutti',
+              'icon' : ''                                                                                 
             }
-          });
-          this.products.forEach(e => {         
-            e.special = []
-            let oldallergiens = JSON.parse(e.allergiens, true)
-            e.allergiens = []
-            let newallergiens = oldallergiens.map(p => this.allergiens[p])
-            for (let i = 0; i < newallergiens.length; i++) {
-              let el = newallergiens[i];
-              if(el.special == 0){
-                e.allergiens.push(el)
-              }else{
-                e.special.push(el)
-              }       
-            }
-          });
-
-        }else{
-          let products = await axios.get(state.baseUrl + "api/products", {})
-          this.products = products.data.results
-          this.allergiens = products.data.allergiens
-
-          this.products.forEach(e => {
-            e.special = []
-            let oldallergiens = JSON.parse(e.allergiens, true)
-            e.allergiens = []
-            let newallergiens = oldallergiens.map(p => this.allergiens[p])
-            for (let i = 0; i < newallergiens.length; i++) {
-              let el = newallergiens[i];
-              if(el.special == 0){
-                e.allergiens.push(el)
-              }else{
-                e.special.push(el)
-              }       
-            }
-          });
-
-        }     
+          }
+        });
+        this.products.forEach(e => {         
+          e.special = []
+          let oldallergiens = JSON.parse(e.allergiens, true)
+          e.allergiens = []
+          let newallergiens = oldallergiens.map(p => this.allergiens[p])
+          for (let i = 0; i < newallergiens.length; i++) {
+            let el = newallergiens[i];
+            if(el.special == 0){
+              e.allergiens.push(el)
+            }else{
+              e.special.push(el)
+            }       
+          }
+        });  
       }
     },
     async mounted() {
@@ -672,7 +683,7 @@
       </div>
 
       <div class="bottom-bar">
-        <div @click="addToCart(selectedItem)" class="btn-add">Aggiungi al carrello</div>
+        <div @click="addToCart(selectedItem)" class="btn_3">Aggiungi al carrello</div>
         <div class="counter">
           <div @click="modCounter(0, selectedItem)" class="cell minus">-</div>
           <h4>{{ selectedItem.counter }}</h4>
@@ -684,7 +695,7 @@
       
     </div>
     <div class="cart-c" v-if="state.cart.products.length !==0">
-      <div v-if="!cartOpen" class="next">Completa Ordine</div>
+      <div v-if="!cartOpen" @click="goCheckOut" class="next btn_3">Completa Ordine</div>
       <div v-if="!cartOpen" class="cart" @click="openCart">
         <span>{{ state.cart.products.length }}</span>
         <p>Totale: € {{ state.cart.totprice / 100}}</p>
@@ -725,109 +736,7 @@
 
 <style scoped lang="scss">
 @use "../assets/styles/general.scss" as *;
-.cart-c{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  position: fixed;
-  bottom: $d-foo;
-  right: 0;
-  .show-c{
-    
-    width: 100%;
-    height: 70vh;
-    background-color: $c1;
-    color: $cText;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    .top-c{
-      font-size: $fs_md;
-      img{
-      width: 26px;
-      padding: 5px;
-      border-radius: 6px;
-      border: 2px solid white;
-    }
-    }
-    .prod-c{
-      overflow: auto;
-      .prod{
-        border-bottom:1px solid white ;
-        padding: 5px;
-        .head{
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          
-        }
-        .body{
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-          .top, .bottom{
-            margin-top: 10px;
-            display: flex !important;
-            gap: 5px !important;
-          }
-          .top{
-            margin: 0 auto;
-            width: 80% !important;
-            align-items: center;
-            
-          }
-          .bottom{
-            width: 50%;
-            flex-direction: column;
-            align-items: flex-start;
-          }
-         
-        }
-  
-      }
 
-    }
-    
-  }
-  .next{
-    margin: 14px;
-    padding: 1.2rem 2rem;
-    background-color: $cText;
-    text-transform: uppercase;
-    border-radius: 20px;
-    font-size: $fs_lg;
-    color: $cCard;
-    box-shadow: 2px -2px 15px rgba(0, 0, 0, 0.358);
-  }
-  .cart{
-    height: 100px;
-    width: 100px;
-    background-image: url('../../public/img/menu-mobile.png');
-    background-position:  center;
-    background-size:  cover;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 17px 12px 4px; 
-    align-items: flex-end;
-    span{
-      padding: 2px;
-      background-color: white;
-      color: black;
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-    p{
-      white-space: nowrap;
-    }
-    
-  }
-
-}
 .show-p{
   // .center-scroll{
   //   overflow: scroll;

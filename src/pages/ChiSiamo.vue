@@ -1,8 +1,9 @@
 <script>
   import { state } from "../state.js";
   import axios from "axios";
+  import AppMain from "../components/MainAboutUs.vue";
   export default {
-    components: {  },
+    components: { AppMain },
 
     data() {
       return {
@@ -16,7 +17,10 @@
 </script>
 
 <template>
-  
+  <div class="container">
+    
+    <AppMain />
+  </div>
 </template>
 
 <style scoped lang="scss">

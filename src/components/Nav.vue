@@ -16,8 +16,13 @@
           
         }else if(npage == 2){
           
-          this.$router.replace("/check-out")
-          
+          if (this.$route.path === '/check-out') {
+            window.location.reload()
+            console.log('Sei già sulla pagina di check-out');
+          } else {
+            this.state.checkOut_t = 1
+            this.$router.replace("/check-out")
+          }
         }else if(npage == 3){
           
           this.$router.replace("/menu")

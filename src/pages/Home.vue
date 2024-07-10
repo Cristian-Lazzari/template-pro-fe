@@ -48,7 +48,7 @@
       <div class="text">
         <h2>{{par.title}}</h2>
         <p>{{ par.p }}</p>
-        <div @click="state.movep(par.cta_destination)" class="cta">{{ par.cta }}</div>
+        <div @click="state.movep(par.cta_destination)" class="btn_1">{{ par.cta }}</div>
       </div>
 
     </section>

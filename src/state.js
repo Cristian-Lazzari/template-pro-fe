@@ -2,6 +2,7 @@ import { reactive } from "vue";
 
 export const state = reactive({
   baseUrl: "http://127.0.0.1:8000/",
+  link_review: "http://127.0.0.1:8000/",
   //baseUrl:"https://dpf.future-plus.it/",
   //domain: "https://dpf.future-plus.it/",
   domain: "https://visionary-centaur-1b3d7b.netlify.app/",
@@ -14,7 +15,14 @@ export const state = reactive({
   //---1-Gestione interfaccia grafica
   
   navMobile: false,
-  checkOut_t: 2,
+  checkOut_t: 1,
+  message : {
+    title : '',
+    text : ''
+  },
+  success_res: '',
+  success_del: '',
+  success_or: '',
   
   //---2-Gestione order
 
@@ -22,6 +30,8 @@ export const state = reactive({
     'totprice' : 0,
     'products' : [],
   },
+  npezzi_c1 : 0,
+  npezzi_c2 : 0,
   
   //---3-Gestione interfaccia date
   mesi :['', 'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
@@ -65,39 +75,95 @@ export const state = reactive({
     'phone' : 'phone',
   },
   //---5-Funzioni 
-  movep(npage){ //1 asporto 2 tavoli 3 menu 4 contatti 5 story 6 news 
-
-    if(npage == 1 ){
-      this.$router.replace("/ordina")
-      
-    }else if(npage == 2){
-      
-      this.$router.replace("/prenota")
-      
-    }else if(npage == 3){
-      
-      this.$router.replace("/menu")
-    }else if(npage == 4){
-      
-      this.$router.replace("/contatti")
-    }else if(npage == 5){
-      
-      this.$router.replace("/story")
-    }else if(npage == 6){
-      
-      this.$router.replace("/news")
-    }else if(npage == 7){
-      
-      this.$router.replace("/")
+  validation(ct, too, us, error){
+    let check = false;
+    if(ct == 3 && too){
+      if(!us.comune){
+        error.comune = 'Il campo "comune" è necessario';
+        check = true;
+      }
+      if(!us.via){
+        error.via = 'Il campo "via" è necessario';
+        check = true;
+      }
+      if(!us.cv){
+        error.cv = 'Il campo "civico" è necessario';
+        check = true;
+      }  
+    }
+    
+    if(!us.tc){
+      error.tc = 'Per ordinare e necessariio accettare i termini e le condizioni';
+      check = true;
+    }
+    //nome
+    if(!us.name){
+      error.name = 'Il campo "nome" è necessario';
+      check = true;
+    }
+    //cognome
+    if(!us.surname){
+      error.surname = 'Il campo "cognome" è necessario';
+      check = true;
+    }
+    // Email
+    if (!us.email) {
+      error.email='Il campo "email" è richiesto!';
+      check = true;
+    } else if (!us.email.includes('@')) {
+      error.email='Il campo "email" deve includere "@"';
+      check = true;
+    } else if (!(us.email.endsWith('.com') || us.email.endsWith('.it'))) {
+      error.email='Il campo "email" deve terminare con ".com" o ".it"';
+      check = true;
+    } else if (us.email.length < 5) {
+      error.email='Il campo "email" deve contenere almeno 5 caratteri';
+      check = true;
+    }
+    us.phone = us.phone.toString()
+    if(!us.phone){
+      error.phone = 'Il campo "telefono" è richiesto';
+      check = true;
+      phone
+    } else if(us.phone.length < 10){
+      error.phone = 'Il campo "email" deve contenere almeno 10 caratteri';
+      check = true;
+    }
+    if(!check){
+      return true;
+    }else {
+      return false;
     }
   },
-
-  
-
-
-  
-
-
+  getServerCart(){
+    let newcart = []
+    this.cart.products.forEach(prod => {
+      let newo = []
+      prod.options.forEach(o => {
+        newo.push(o.name)
+      });
+      let newr = []
+      prod.removed.forEach(o => {
+        newr.push(o.name)
+      });
+      let newa = []
+      prod.add.forEach(o => {
+        newa.push(o.name)
+      });
+      let product = {
+        id : prod.id,
+        name : prod.name,
+        add : newa,
+        removed : newr,
+        options : newo,
+        price : prod.price,
+        counter : prod.counter,
+      }
+      newcart.push(product)
+      
+    });
+    return newcart
+  }
 
   //---3-Dati Prenotazioni
 

@@ -243,7 +243,7 @@
         </div>
       </div>
       <div class="bottom-bar">
-        <div class="btn-add">Aggiungi al carrello</div>
+        
         <div class="price">€{{ selectedItem.price / 100 }}</div>
       </div>
       
