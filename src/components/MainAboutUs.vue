@@ -8,25 +8,18 @@
       return {
         state,
         posts :[],
-        destination : 0,
       };
     },
     methods:{
       async getPosts(){
-       
-        if(this.$router.path === '/story'){
-          this.destination = 1
-        }else{
-          this.destination = 2
-        }
         let params = {
-
-          path : this.destination
+          path : this.state.post_p
         }
         let posts = await axios.get(state.baseUrl + "api/post", {params})
         this.posts = posts.data.results 
       },
       desk (d){
+        console.log(this.$router.path)
         let arrComp = []
         let arrAcapo = d.split('/**/')
         
@@ -40,14 +33,13 @@
     mounted(){
       this.getPosts()
     }
+    
   };
 </script>
 
 <template>
   <div class="main-about">
-    <div class="back" @click="set=0; choice = 0">indietro</div>
-    <!-- <div class="other" @click="other">{{ other(set) }}</div> -->
-    <h1 v-if="destination" >Storia del nostro Locale</h1>
+    <h1 v-if="state.post_p == 2" >Storia del nostro Locale</h1>
     <h1 v-else>Scopri news, eventi e promozioni</h1>
     <div class="post-container">
       <div v-for="post in posts" :key="post.id" class="post" >
@@ -62,7 +54,7 @@
         <div class="img-cont">
           <img :src=" state.getImageUrl(post.image)" alt="">
           <div class="hashtags">
-            <span>{{ post.hashtags }} </span>
+            <span>{{ post.hashtag }} </span>
           </div>
         </div>
         <a :href="post.link" v-if="post.link">
@@ -71,8 +63,6 @@
           </svg>
         </a>
       </div>
-      <div class="spacer"></div>
-
     </div>
   </div>
 
@@ -93,6 +83,7 @@
   border: 2px solid $c2;
     
 }
+$border_r_card: 20px;
   
 .main-about{
   display: flex;
@@ -106,42 +97,8 @@
   padding-inline: 10px;
   overflow: auto;
   position: relative;
-  //padding-bottom: 40vh;
-  h1{
-    margin-top: 20px;
-    font-size: clamp(28px, 3.2vw, 40px);
-  }
-  .other, .back{
-    text-transform: uppercase;
-    border: 2px solid white;
-    border-radius: 30px;
-    padding: .1em .6em ;
-    opacity: .6;
-    font-size: clamp(11px, 2vw, 12px);
-  }
-  @media (min-width:800px) {
-    
-    .other:hover, .back:hover{
-      scale: 1.1;
-      background-color: $c4;
-      transition: all .2s ease-in-out;
-      margin:0 0 0 0;
-    }
-  }
-  .other{
-    right: 8px;
-    margin: 0 5px 0 0;
-  }
-  .back{
-    margin: 0 0 0 5px;
-    left: 5px;
-  }
-  
-
-
   .post-container{
     height: 100%;
-    
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
@@ -149,16 +106,14 @@
     .post::after{
       content: ' ';
       display: block;
-      background-color: rgba(16, 16, 16, 0.832);
+      background-color: rgba(28, 28, 30, 0.642);
+      //filter: blur(100px);
       position: absolute;
       height: 100%;
       width: 100%;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      inset: 0;
       z-index: 2;
-  
+      border-radius: $border_r_card;
     }
     .post:nth-child(even){
       flex-direction: row-reverse;
@@ -168,8 +123,6 @@
       }
       .text{
         text-align: left;
-
-      
       }
       .img-cont{
         align-items: flex-start;
@@ -177,10 +130,15 @@
           justify-content: flex-start
         }
       }
-    }
-    
+      .img-cont{
+        img{
+          box-shadow: 17px 10px 38px black;
+        }
 
+      }
+    }
     .post{
+      width: 100%;
       //background-image: url(../assets/img/abus.png);
       display: flex;
       justify-content: center;
@@ -191,6 +149,8 @@
       background-position: top;
       background-size: cover;
       position: relative;
+      border-radius: $border_r_card;
+      overflow: hidden;
       .image{
         position: absolute;
         top: 0;
@@ -199,9 +159,10 @@
         width: 100%;
         z-index: 2;
         object-fit: cover;
+        border-radius: $border_r_card;
+        filter: blur(6px);
       }
       .text{
-        
         position: relative;
         z-index: 3;
         display: flex;
@@ -210,7 +171,6 @@
         width: 40%;
         text-align: right;
         h4{
-          
           font-size: clamp(18px, 2.2vw, 25px);
         }
         p{
@@ -231,7 +191,8 @@
         img{
           width: 100%;
           max-width: 400px;
-          box-shadow: 17px 10px 38px black;
+          box-shadow: -17px 10px 38px black;
+          border-radius: 10px;
         }
         .hashtags{
           display: flex;
@@ -242,8 +203,8 @@
           flex-wrap: wrap;
           width: 100%;
           span{
-
-            color: $c3 !important;
+            font-size: $fs_sm;
+            color: $c5 !important;
           }
         }
       }
@@ -259,14 +220,28 @@
 }
 
 
-@media (max-width:$bp_sm){
+@media (max-width:$bp_md){
   .post{
     display: flex;
     flex-direction: column !important;
+    align-items: center;
     gap: 10px;
-
     .text{
-      width: 70% !important;
+      padding: .3rem !important;
+      text-align: left !important;;
+
+      width: 100% !important;
+    }
+    .img-cont{
+      width: 100% !important;
+      img{
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: 0 0 20px black !important;
+      }
+    }
+    .hashtags{
+      max-width: 70%;
     }
   }
 }

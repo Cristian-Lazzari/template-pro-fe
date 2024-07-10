@@ -31,9 +31,11 @@
           this.$router.replace("/contatti")
         }else if(npage == 5){
           
+          this.state.post_p = 2
           this.$router.replace("/story")
         }else if(npage == 6){
           
+          this.state.post_p = 1
           this.$router.replace("/news")
         }else if(npage == 7){
           

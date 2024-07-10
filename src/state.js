@@ -20,9 +20,7 @@ export const state = reactive({
     title : '',
     text : ''
   },
-  success_res: '',
-  success_del: '',
-  success_or: '',
+  post_p : 1,
   
   //---2-Gestione order
 
