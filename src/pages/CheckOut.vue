@@ -57,6 +57,14 @@
         let date_slot = this.day.date + ' ' + this.time.time
         // console.log(date_slot)
         // console.log(this.user)
+        console.log(this.user.comune)
+        this.error.name =''
+        this.error.surname =''
+        this.error.email =''
+        this.error.cv =''
+        this.error.via =''
+        this.error.comune =''
+        this.error.tc =''
         if(this.state.validation(this.state.checkOut_t, this.typeOfOrdering, this.user, this.error)){
           if(this.state.checkOut_t == 1){
             let body = {
@@ -250,7 +258,7 @@
         this.getDay(f)
         this.state.checkOut_t = f
         if(this.state.checkOut_t == 3){
-          this.indirizzi = JSON.parse(state.settings[7].property)
+          this.indirizzi = state.settings[7].property
           console.log(this.indirizzi)
         }
       },
@@ -475,8 +483,8 @@
         <div class="split-2">
           <div class="input-group more">
             <label for="name">Comune</label>
-            <select name="comune" id="comune">
-              <option v-for="i in indirizzi" :value="user.comune" :key="i.name">
+            <select name="comune" :value="user.comune" id="comune">
+              <option v-for="i in indirizzi" :key="i.name">
                 {{ i.comune }} - {{ i.provincia }}
               </option>
             </select>

@@ -3,7 +3,7 @@ import { reactive } from "vue";
 export const state = reactive({
   baseUrl: "http://127.0.0.1:8000/",
   link_review: "http://127.0.0.1:8000/",
-  baseUrl:"https://dpf.future-plus.it/",
+  //baseUrl:"https://dpf.future-plus.it/",
   //domain: "https://dpf.future-plus.it/",
   domain: "https://visionary-centaur-1b3d7b.netlify.app/",
   getImageUrl(image) {
@@ -72,6 +72,12 @@ export const state = reactive({
     'email' : 'email',
     'phone' : 'phone',
   },
+  position : {
+    'foto_maps' : 'email',
+    'link_maps' : 'phone',
+    'indirizzo' : 'phone',
+  },
+  orari_aperture:[], 
   //---5-Funzioni 
   validation(ct, too, us, error){
     let check = false;
