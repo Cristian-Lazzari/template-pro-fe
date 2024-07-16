@@ -20,6 +20,13 @@
     async mounted() {
       const settings = await axios.get(state.baseUrl + "api/setting", {});
       this.state.settings = settings.data.results;
+      this.state.orari_aperture = this.state.settings[3].property;
+      this.state.position = this.state.settings[4].property;
+      this.state.contact = this.state.settings[5].property;
+      this.state.ferie = this.state.settings[2].property;
+      this.state.ferie.status = this.state.settings[2].status;
+      console.log(this.state.ferie)
+      console.log(this.state.ferie.status)
     },
   }
 </script>

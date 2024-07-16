@@ -103,8 +103,8 @@
     padding-inline: 1rem;
     color: $cText;
     span, a{
-      font-size: clamp(17px, 2.4vw, 20px);
-      font-family: "Jomhuria", serif;
+      font-size: $fs_md;
+      //font-family: "Jomhuria", serif;
     }
   }
   .left{
@@ -178,7 +178,7 @@
   span, a{
     display: none;
     opacity: 0;
-    font-size: clamp(25px, 3.3vw, 32px);
+    font-size: $fs_lg;
     text-transform: uppercase;
     transition: opacity .1s ease-in-out;
   }

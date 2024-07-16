@@ -68,14 +68,11 @@ export const state = reactive({
 
   ],
   //-----4-a-Dati
-  contact : {
-    'email' : 'email',
-    'phone' : 'phone',
+  ferie: {
+    status : false
   },
+  contact : {},
   position : {
-    'foto_maps' : 'email',
-    'link_maps' : 'phone',
-    'indirizzo' : 'phone',
   },
   orari_aperture:[], 
   //---5-Funzioni 
@@ -158,8 +155,8 @@ export const state = reactive({
         id : prod.id,
         name : prod.name,
         add : newa,
-        removed : newr,
-        options : newo,
+        remove : newr,
+        option : newo,
         price : prod.price,
         counter : prod.counter,
       }

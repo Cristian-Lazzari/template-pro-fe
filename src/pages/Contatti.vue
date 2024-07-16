@@ -24,16 +24,16 @@
           <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
           </svg>
-          <a :href="'mailto:' + state.contact.email">{{state.contact.email}}</a>
+          <a :href="'mailto:' + state.contact.telefono">{{state.contact.telefono}}</a>
         </div>
         <div class="contact">
           <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
             <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
           </svg>
-          <a :href="'mailto:' + state.contact.phone">{{state.contact.phone}}</a>
+          <a :href="'mailto:' + state.contact.email">{{state.contact.email}}</a>
         </div>
       </div>
-      <div class="bottom">
+      <div class="">
         <h2>I nostri Social</h2>
         <div class="social">
           <a href=""><svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
@@ -57,25 +57,20 @@
         <h2>Dove trovarci</h2>
         <div class="wm">
           <img :src="state.domain + 'img/maps.png'" alt="">
-          <a href="">Via del ristorante 23</a>
+          <a :href="state.position.link_maps">{{ state.position.indirizzo }}</a>
         </div>
       </section>
-      <img class="mappa" :src="state.domain + 'img/googlemaps.png'" alt="">
+      <img class="mappa" :src="state.position.foto_maps" alt="">
     </div>
     <section class="sec">
       <div class="top">
         <h2>Titolo paragrafo</h2>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis labore accusamus veniam at exercitationem modi, eum fuga porro itaque, architecto alias aliquam quis nihil consequatur! Maiores nam minus sapiente ipsum?</p>
-        <div class="cta">Prenota</div>
+        <div class="btn_1">Prenota</div>
       </div>
       <div class="bottom">
         <h2>Orari d'apertura</h2>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
-        <p><span class="day">Lunedi</span> <span class="time">12:30 - 18:40</span></p>
+        <p v-for="(g, i) in state.orari_aperture" :key="i"><span class="day">{{ i }}</span> <span class="time"> {{ g }}</span></p>
       </div>
     </section>
   </div>
@@ -90,23 +85,22 @@
   align-items: center;
   gap: 1.4rem;
   h2{
-    font-family: "Jomhuria";
-    font-size: clamp(19px, 2.9vw, 30px);
+    font-size: $fs_md;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
   }
   section{
     background-color: $c1;
     border-radius: 20px;
     padding: 2rem;
     svg{
-      width: clamp(20px, 10%, 30px);
+      width: 25px !important;
     }
     .contact{
       display: flex;
       align-items: center;
-      padding-left: 20px;
-      gap: 10px;
+      gap: 2rem;
+      width: 100%;
     }
 
   }
@@ -118,11 +112,28 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 3rem;
+    font-size: $fs_sm;
     .top{
       display: flex;
       flex-direction: column;
       gap: 10px;
       align-items: center;
+    }
+    h2{
+      width: 100%;
+      text-align: center;
+    }
+    .bottom{
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-start;
+      p{
+        width: 100%;
+        font-size: $fs_md;
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
   .map{
@@ -133,7 +144,7 @@
       align-items: center;
       gap: 10px;
       img{
-        width: 10%;
+        width: 34px;
         filter: invert(100);
       }
     }
@@ -152,18 +163,23 @@
     align-items: center;
     width: 100%;
 
+    
     svg{
-      width: clamp(26px, 32%, 44px);
+      font-size: $fs_lg;
+      width: 35px !important
     }
   }
 }
-@media (max-width:$bp_md) {
+@media (max-width:$bp_lg) {
   .contatti{
     height: auto;
     padding-bottom: 50vh;
     flex-direction: column;
     .sec{
       width: 100% !important;
+      .bottom{
+        width: 100% !important;
+      }
     }
   }
 

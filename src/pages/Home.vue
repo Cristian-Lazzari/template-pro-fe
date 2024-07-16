@@ -1,8 +1,9 @@
 <script>
   import { state } from "../state.js";
   import axios from "axios";
+  import AppMessaggio from "../components/Message.vue";
   export default {
-    components: {  },
+    components: { AppMessaggio },
 
     data() {
       return {
@@ -40,6 +41,7 @@
 
 <template>
   <div id="home" class="cont">
+    <AppMessaggio />
     <section v-for="par in content" :key="par.title">
       <div class="img-sect">
         <img :src="par.img" alt="">

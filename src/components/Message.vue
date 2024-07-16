@@ -13,19 +13,26 @@
       closemessage(){
         this.state.message.title = ''
         this.state.message.message = ''
+        this.state.ferie.status =false
       }
     },
   };
 </script>
 
 <template>
-  <div class="overlay" v-if="state.message.title">
+  <div class="overlay" v-if="state.message.title || state.ferie.status">
 
-    <div class="message">
+    <div  v-if="state.message.title" class="message">
       <img class="close" @click="closemessage" src="../../public/img/close-x.png" >
       <h1>{{ state.message.title }}</h1>
       <p>{{ state.message.text }}</p>
       <p>Se sei soddidfatto <a :href="state.link_review">lascia una recensione!</a> </p>
+    </div>
+    <div  v-if="state.ferie.status" class="message">
+      <img class="close" @click="closemessage" src="../../public/img/close-x.png" >
+      <h1>SIAMO IN FERIE DAL {{ state.ferie.from }} AL {{ state.ferie.to }} </h1>
+      <p>Anche per noi e arrivato il momento di prenderci un po di riposo, nel frattempo sfoglia il menu e scopri le sfiziosita del nostro locale </p>
+      
     </div>
   </div>
   
@@ -63,9 +70,15 @@
       max-width: 50%;
       max-height: 50%;
       background-color: $c3;
+      overflow: auto;
       p{
         flex-grow: 1;
       }
+    }
+  }
+  @media (max-width:$bp_md) {
+    .message{
+     max-width: 70% !important;
     }
   }
 

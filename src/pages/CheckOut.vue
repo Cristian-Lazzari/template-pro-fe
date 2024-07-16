@@ -331,7 +331,84 @@
         }else{
           return []
         }
-      }
+      },
+      //ordina cloni
+      editProd(a_r, type, ing, si){
+        //console.log(ing)
+        let checkRicalcolo = false
+        this.state.cart.products.forEach(e => {
+          if(si === e){
+            checkRicalcolo = true
+          }
+        });
+        if (type == 'add') {
+          if(a_r){
+            si.price = (si.counter * ing.price) + si.price
+            si.add.push(ing)
+          }else{
+            si.price = si.price - (si.counter * ing.price)
+            let newarr = []
+            si.add.forEach(e => {
+              if( e.name !== ing.name){
+                newarr.push(e)
+              }
+            }); 
+            si.add = newarr
+          }    
+        }else if(type == 'rem'){
+          if(a_r){
+            si.removed.push(ing)
+          }else{
+            let newarr = []
+            si.removed.forEach(e => {
+              if( e.name !== ing.name){
+                newarr.push(e)
+              }
+            }); 
+            si.removed = newarr
+          }    
+        }else if(type == 'opt'){
+          if(a_r){
+            si.options.push(ing)
+            si.price = (si.counter * ing.price) + si.price
+          }else{
+            si.price = si.price - (si.counter * ing.price)
+            let newarr = []
+            si.options.forEach(e => {
+              if( e.name !== ing.name){
+                newarr.push(e)
+              }
+            }); 
+            si.options = newarr 
+          }    
+        }
+        if(checkRicalcolo){
+          const newproducts = this.state.cart.products
+          this.state.cart.products = []
+          newproducts.forEach(element => {
+            this.addToCart(element)
+          });
+        }
+        
+        console.log(ing)
+      },
+      getTotCart(){
+        this.state.cart.totprice = 0
+        this.state.cart.products.forEach(e => {
+          this.state.cart.totprice += e.price
+        });
+      },
+      //leggermente modificata
+      removeItem(p){
+        this.state.cart.products.splice(p, 1)
+        if(this.state.cart.products.length == 0){
+          this.cartOpen = false
+        }
+        this.getTotCart();
+        if(!this.state.cart.products.length){
+          this.$router.replace( '/ordina')
+        }
+      },
     },
 
     async created(){

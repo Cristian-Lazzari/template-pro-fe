@@ -267,6 +267,7 @@
         if(this.state.cart.products.length == 0){
           this.cartOpen = false
         }
+        this.getTotCart()
       },
 
       modCounter(a_r, si){
@@ -675,8 +676,10 @@
           </div>
           <div v-if="selectedItem.x_details" class="body allergiens">
             <p>{{ selectedItem.description }}</p>
-            <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
-            <p v-if="selectedItem.allergiens.length == 0" >Nessun allergiene presente</p>
+            <div class="al-c">
+              <img  v-for="a in selectedItem.allergiens" :key="a.name" :src="a.img" alt="">
+            </div>
+            <p v-if="selectedItem.allergiens.length == 0" >Nessun allergiene presente.</p>
           </div>
         </div>
 
@@ -697,12 +700,13 @@
     <div class="cart-c" v-if="state.cart.products.length !==0">
       <div v-if="!cartOpen" @click="goCheckOut" class="next btn_3">Completa Ordine</div>
       <div v-if="!cartOpen" class="cart" @click="openCart">
+        <h3>Controlla il tuo carrello</h3>
         <span>{{ state.cart.products.length }}</span>
         <p>Totale: € {{ state.cart.totprice / 100}}</p>
       </div>
       <div v-if="cartOpen" class="show-c"  >
         <div class="top-c"><h3>Prodotti:</h3>
-          <img @click="openCart" src="../../public/img/close-x.png" alt=""></div>
+          <img class="close" @click="openCart" src="../../public/img/close-x.png" alt=""></div>
         <div class="prod-c">
           <div v-for="(p, i) in state.cart.products" :key="p.id" class="prod">
             <div class="head">
@@ -759,16 +763,10 @@
         gap: 1rem;
         //overflow: hidden;
       }
-      .active{
-
-        //background-color: aqua;
-      }
       .not_act{
         opacity: .3;
       }
-      
       .allergiens{
-
         flex-shrink: 0.5;
         padding:  0.4rem 3px;
         display: flex;
@@ -802,10 +800,21 @@
         justify-content: center;
       }
     }
-    
+    .al-c{
+      width: 100%;
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+    }
   }
+  
   .bottom-bar{
+    //position: relative;
+    .price{
+      font-size: $fs_xlg;
+    }
     .counter{
+      
       display: flex;
       gap: 1rem;
       align-items: center;
@@ -813,17 +822,62 @@
         border: none;
         height: 40px;
         text-align: center;
-        width: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 5px;
+        font-size: $fs_lg;
+      }
+      .cell{
+        width: 40px;
         background-color: $c5;
         color: $c2;
-        font-size: $fs_lg;
+
       }
     }
   }
-
+}
+.cart{
+  h3{
+    display: none;
+  }
+}
+.show-c{
+  width: 90%;
+  margin: 10px auto;
+  .close{
+    width: 30px;
+  }
+}
+@media (min-width:$bp_sm) {
+  .cart{
+  position: relative;
+  background-color: $c4 !important;
+  margin: 14px;
+  height: auto !important;
+  width: auto !important;
+  padding: 1rem 4rem 1rem 1.2rem!important;
+  border-radius: 10px;
+  align-items: flex-start !important;
+  font-size: $fs_sm;
+  p{
+    font-size: $fs_xsm;
+    
+  }
+  h3{
+    display: block;
+  }
+  span{
+    font-size: $fs_xsm;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-radius: 10px!important;
+    padding: 6px !important;
+    position: absolute !important;
+    right: 10px;
+  }
+  background-image: none !important ;
+}
+  
 }
 </style>
